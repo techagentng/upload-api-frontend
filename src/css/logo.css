@@ -1,0 +1,15 @@
+.landing-logo {
+    font-style: normal;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 32px;
+  }
+  .landing-logo img{
+    width: 130px;
+  }
+  .zoja {
+    color: #fe5d0c;
+  }
+  .pay {
+    color: #22eed3;
+  }

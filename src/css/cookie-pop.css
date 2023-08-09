@@ -1,0 +1,26 @@
+.cookie-pop {
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    width: 470px;
+    height: 50px;
+    padding: 0 20px;
+    border-radius: 10px;
+    margin-left: 40%;
+    margin-bottom: 20px;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cookie-pop p{
+    font-size: 12px;
+}
+.cookie-pop button {
+    background-color: #dcddf7;
+    width: 110px;
+    height: 80%;
+    border-radius: 6px;
+    font-weight: 100;
+    font-size: 14px;
+    color: #0f133b;
+}

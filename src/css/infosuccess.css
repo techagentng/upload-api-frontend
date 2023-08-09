@@ -1,0 +1,38 @@
+.info {
+   
+    
+}
+.info-success{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    margin-top: 30px;
+    padding-left: 34px;
+    top: 0%;
+    right: 0;
+    width: 320px;
+    height: 36px;
+    background-color: #009E52;
+    z-index: 100000;
+}
+.info-danger{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    margin-top: 30px;
+    padding-left: 34px;
+    top: 0%;
+    right: 0;
+    width: 320px;
+    height: 36px;
+    background-color: #e22b07;
+    z-index: 100000;
+}
+.info-success p{
+    padding-right: 15px;
+    color: white;
+}
+.info-danger p{
+    padding-right: 15px;
+    color: white;
+}

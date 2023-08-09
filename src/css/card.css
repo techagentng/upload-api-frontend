@@ -1,0 +1,96 @@
+.section2 {
+    width: 100%;
+    padding-top: 32px;
+  padding-left: 7%;
+  padding-right: 7%;
+  padding-bottom: 32px;
+
+  background-color: #f8fafc;
+  }
+  .section2 div h2 {
+    width: 100%;
+    font-size: 40px;
+    font-weight: 800;
+    color: #323348;
+  }
+  .section2-text-section p {
+    margin-top: 12px;
+    margin-bottom: 32px;
+    width: 100%;
+    line-height: 24px;
+    color: #494b83;
+  }
+  
+  .section2-card {
+    width: 100%;
+    border-radius: 9px;
+  }
+  .card1 {
+    background-color: rgba(233, 234, 246, 0.8);
+  }
+  .card2 {
+    background-color: rgb(236,210,96);
+  }
+  .card3 {
+    background-color: #fe5d0c;
+    color: #f8fafc;
+  }
+  
+  .card3 h4 {
+    margin: 0 32px;
+    font-size: 19px;
+    color: #f8fafc;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 28px;
+  }
+  
+  .card1 h4,
+  .card2 h4 {
+    color: #494b83;
+    margin: 0 32px;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .card1 p,
+  .card2 p,
+  .card3 p {
+    margin: 32px;
+    line-height: 27px;
+    font-size: 16px;
+    padding-bottom: 40px;
+  }
+  .h2{
+    display: none;
+  }
+
+  .img {
+    display: none;
+  }
+
+  @media screen and (min-width: 800px){
+    .section2-text-section p{
+      width: 51%;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .h2{
+      display: block;
+    }
+    .section2-cards{
+      display: flex;
+      justify-content: space-between;
+    }
+    .section2-card {
+      width: 32%;
+      border-radius: 9px;
+    }
+  }
+
+  @media screen and (min-width: 1400px){
+    .img {
+      display: inline;
+    }
+  }   

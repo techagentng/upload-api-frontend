@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+  font-family: 'Metropolis', sans-serif;
+}
+
+*,
+*::before,
+*::after { box-sizing:border-box; }
+a { cursor:pointer; }
+button { background-color:transparent; color:inherit; border-width:0; padding:0; cursor:pointer; }
+figure{ margin:0; }
+ul, ol, dd { margin:0; padding:0; list-style:none; }
+
+cite { font-style:normal; }
+fieldset { border-width:0; padding:0; margin:0; }
+
+.terms-container{
+  background-color: #f8fafc;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: justify;
+  letter-spacing: -0.45px;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: #5E6366;
+}
+.terms-content h1{
+  font-family: 'Metropolis';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 30px !important;
+  line-height: 80px;
+  text-align: center;
+  letter-spacing: -1.85143px;
+  color: #323348;
+
+}
+.terms-contents {
+  display: block;
+  margin: 0px 20px;
+}
+.side-content {
+  display: block;
+  padding: 10px 20px;
+}
+.terms-icon {
+  display: flex;
+}
+.inner-content {
+  width: 150px;
+  list-style: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+.cookies a {
+  text-decoration: underline;
+  color: blue;
+}
+.inner-content a:active {
+  color: #222B88;
+}
+.inner-content a[tabindex]:focus {
+  color:#222B88;;
+  outline: none;
+}
+
+@media screen and (min-width: 801px) {
+  .terms-container{
+    background-color: #f8fafc;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: justify;
+    letter-spacing: -0.45px;
+    font-feature-settings: 'tnum' on, 'lnum' on;
+    color: #5E6366;
+  }
+  .inner-content a:active {
+    color: #222B88;
+  }
+  .terms-contents {
+    display: flex;
+    padding-top: 10%;
+  }
+  .terms-contents h5{
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 24px;
+    text-align: justify;
+    font-feature-settings: 'tnum' on, 'lnum' on;
+  }
+  .terms-content {
+      margin: 2% 6% 10% 10%;
+  }
+  .terms-content h1{
+    font-family: 'Metropolis';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 80px;
+    text-align: justify;
+    letter-spacing: -1.85143px;
+    color: #323348;
+  }
+  
+  .side-bar {
+    padding: 0% 10%;
+  
+  }
+  
+  .side-content {
+    margin: 20px;
+  }
+  .inner-content {
+    width: 300px;
+    list-style: none;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .side-content h4{
+    margin-left: -10px;
+    font-weight: 400;
+    font-size: 14px;  
+  }
+  .terms-icon li{
+    display: inline;
+  }
+  .icon {
+    margin-right: 5px;
+    text-align: center;
+    margin-top: 2px;
+  }
+  .icon h6{
+    margin-left: 6px;
+  }
+}  
+
+@media screen and (min-width: 601px) {
+  .terms-container{
+    background-color: #f8fafc;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: justify;
+    letter-spacing: -0.45px;
+    font-feature-settings: 'tnum' on, 'lnum' on;
+    color: #5E6366;
+  }
+  
+  .terms-contents {
+    display: flex;
+    padding-top: 10%;
+  }
+  .terms-contents h5{
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 24px;
+    text-align: justify;
+    font-feature-settings: 'tnum' on, 'lnum' on;
+  }
+  .terms-content {
+      margin: 2% 6% 10% 10%;
+  }
+  .terms-content h1{
+    font-family: 'Metropolis';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 80px;
+    text-align: justify;
+    letter-spacing: -1.85143px;
+    color: #323348;
+  
+  }
+  .side-bar {
+    padding: 0% 10%;  
+  }
+  .side-content {
+    margin: 20px;
+  }
+  .inner-content {
+    width: 150px;
+    list-style: none;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .side-content h4{
+    margin-left: -10px;
+    font-weight: 400;
+    font-size: 14px;  
+  }
+  .terms-icon li{
+    display: inline;
+  }
+  .icon {
+    margin-right: 5px;
+    text-align: center;
+    margin-top: 2px;
+  }
+  .icon h6{
+    margin-left: 6px;
+  }
+}  
+
+
+

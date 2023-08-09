@@ -1,0 +1,129 @@
+.modal-general-container{
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0,0,0,0.3);
+    overflow: hidden;
+    z-index: 10;
+    
+}
+.modal-checkbox {
+    display: flex;
+    justify-content: flex-start;
+}
+.modal-checkbox-yes {
+    box-sizing: border-box;
+    border: 1px solid #E1E3E6;
+    border-radius: 16px;
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 81px;
+    height: 40px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-evenly;
+}
+.modal-checkbox-active {
+    background-color: #222B88;
+    opacity: 0.9;
+}
+.modal-checkbox-active .modal-checkbox-text {
+    color: #ffffff;
+}
+.modal-checkbox-text {
+    color: #263238;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 2px;
+}
+.error-message {
+    color: red;
+    padding: 0;
+    margin: 0;
+}
+.modal-container{
+    transition-duration: 2s;
+    transition-timing-function: linear;
+    transition-delay: 1s;
+    height: fit-content;
+    padding: 32px 20px;
+    margin: 10px;
+    margin-top:15%;
+    border-radius: 5px;
+    background-color: white;
+}
+.modal-wrapper{
+    padding: 5px;
+    margin: auto;
+    color: #494B83;
+}
+label{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+.modal-title{
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal-title p{
+    font-weight: 700;
+    font-size: 18px;
+}
+.modal-description{
+    margin-top:0px;
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 24px;
+}
+.modal-input-section div{
+    display: flex;
+    width: 90%;
+}
+.modal-input-section div input{
+    width: 90%;
+    font-weight: 400;
+    font-size: 14px;
+    border: none;
+}
+.modal-input-section div input:focus{
+    outline: none;
+}
+.cancel-btn{
+    margin: 0 !important;
+    padding:0 !important;
+}
+.bottom{
+    margin-bottom: 30px;
+}
+.modal-input-container{
+    margin-bottom: 12px;
+}
+.modal-input-section{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #494B83;
+    border-radius: 8px;
+
+    padding: 10px 0;
+}
+.modal-input-section i{
+    margin-right: 10px;
+    margin-left: 19px;
+}
+
+@media screen and (min-width: 550px) {
+    .modal-container{
+        width: 500px;
+        margin: auto;
+        margin-top: 6%;
+    }
+    .modal-general-container{
+        overflow: scroll;
+    }
+}

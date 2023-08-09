@@ -1,0 +1,107 @@
+ .landing-header {
+     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-top: 12px;
+    padding-bottom: 2px;
+    padding-left: 7%;
+    padding-right: 7%;
+    background-color: #f8fafc;
+  }
+  
+  .logo-mobile{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fe5d0c;
+  }
+  .nav {
+    display: none;
+  }
+  .nav-mobile{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fff;
+      width: 100%;
+  }
+  .nav-mobile nav{
+      margin-top:13px;
+      margin-bottom:13px;
+  }
+
+  .nav-mobile nav li{
+      text-align: center;
+    padding:8px;
+  }
+  .landing-navbg1{
+  background-color: #f8fafc;
+  }
+  .landing-navbg{
+      background-color: white;
+  }
+  .nav-links:hover {
+    color: #162082;
+    transition: .7s;
+    transition-timing-function: ease-in-out;
+  }
+.landing-header-button {
+    height: 40px;
+    width: 159px;
+    border-radius: 5px;
+    border: 1px solid #fe5d0c;
+    background-color: transparent;
+    font-weight: 500;
+    font-family: "Montserrat", sans-serif;
+    color: #162082;
+    letter-spacing: 0.01em;
+    margin-bottom:47px ;
+  }
+  .landing-header-button:hover{
+    background-color: #fe5d0c;
+    color: #f8fafc;
+  }
+
+  @media screen and (min-width: 800px) {
+    .landing-header{
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-bottom: 12px;
+      position: fixed;
+      z-index: 1000;
+    }
+    .logo-mobile{
+      width: fit-content;
+    }
+  .nav-mobile, .nav-cancel{
+      display: none;
+    }
+    .nav{
+      width: 75%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .landing-header-button {
+      margin:0;
+    }
+    .nav nav{
+      width: 60%;
+      margin-left: 15%;
+    }
+    .nav ul {
+      width: 60%;
+      display: flex;
+    }
+    .nav li{
+      width: fit-content;
+      margin-right:10%;
+    }
+    
+  }
+  

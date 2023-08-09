@@ -1,0 +1,286 @@
+.feature-container{
+  width: 100%;
+  padding-left: 7%;
+  padding-right: 7%;
+  padding-top: 35px;
+  background-color: #F8FAFC;
+  padding-bottom: 32px;
+  margin-top: 32px;
+}
+.feature-transaction-container{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 228px;
+  height: 184px;
+  align-items: center;
+  margin: 32px auto;
+}
+.f-btn{
+  display: none !important;
+}
+.mobile-btn{
+  width: fit-content;
+  margin: 32px auto;
+}
+.feature-title p{
+  font-weight: 900;
+font-size: 24px;
+line-height: 32px;
+color:#323348;
+margin-bottom: 20px;
+}
+.feature-detail{
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+}
+.feature-transaction-fee, .feature-transaction-utility{
+  border-radius: 30px 30px 30px 0px;
+
+}
+.feature-transaction-ads{
+  border-radius: 30px 30px  0px 30px;
+}
+br{
+  display: block;
+}
+
+.image-circle img{
+  margin-right: 1%;
+  margin-top: 10%; 
+  width: 20%;
+}
+.feature-p{
+  font-weight: 700;
+font-size: 18px;
+line-height: 24px;
+align-self: center;
+text-align: center;
+}
+
+
+@media screen and (min-width: 980px){
+ .feature{
+    width: 100%;
+   display: flex !important;
+ }
+ .feature-body-1{
+   align-self: center;
+   width: fit-content;
+ }
+ .feature-body-2{
+   margin: 55px 0 !important;
+ }
+.mobile-btn{
+  display:none !important;
+}
+.f-btn{
+  display: block !important;
+}
+.feature-transaction-fee, .feature-transaction-ads {
+  border-radius: 30px 30px 30px 0px;
+
+}
+.feature-transaction-utility{
+  border-radius: 30px 30px  0px 30px;
+}
+.font{
+  font-size: 32px !important;
+}
+.feature-shape{
+  width: fit-content !important;
+}
+.feature-detail{
+  margin-bottom: 40px;
+}
+
+  
+}
+@media screen and (min-width: 801px) {
+  .feature-shape {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-left: 7%;
+}
+.feature-transaction-container{
+  margin: 10px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.web {
+  display: block;
+}
+.mobile {
+  display: none;
+}
+.feature {
+  display: block;
+}
+.feature-mobile {
+  display: none;
+}
+/*
+.feature-title {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 45px;
+  height: 90px;
+  width: 550px;
+  color: #323348;
+}
+.feature-transaction-fee {
+  height: 184px;
+  background: #ffffff;
+  border-radius: 30px 30px 30px 0px;
+}
+.feature-transaction-ads {
+  margin: 25px 0px 55px 0px;
+  height: 184px;
+  background: #ffffff;
+  border-radius: 30px 30px 0px 30px;
+}
+.feature-transaction-utility {
+  margin: 25px 0px 55px 0px;
+  height: 184px;
+  left: 964px;
+  top: 299px;
+  background: #ffffff;
+  border-radius: 30px 30px 30px 0px;
+}
+.feature {
+  margin-left: 122px;
+  margin-right: 120px;
+
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.feature-detail {
+  width: 381px;
+  margin-top: 17px;
+  color: #5e6366;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 27px;
+}
+.feature-body-1 {
+  margin-top: 140px;
+}
+.feature-body-2 {
+  margin-top: 70px;
+  margin-left: 68px;
+}
+.feature-body-3 {
+  margin: 170px 224px 144px 25px;
+}
+.feature-button {
+  margin-top: 30px;
+  margin-bottom: 130px;
+}
+.feature-btn {
+  color: #ffffff;
+  border: 1px solid #162082;
+  background-color: #162082;
+}
+.trans-detail {
+  font-family: "Montserrat";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  /* or 133% */
+
+  /*
+  margin: 0 31px 43px 31px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.005em;
+  color: #494b83;
+}
+.utility-detail {
+  font-family: "Montserrat";
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.005em;
+  color: #494b83;
+}
+
+
+@media only screen and (max-width: 800px) {
+  /* For mobile phones: */
+  /*[class*="col-"] {
+    width: 100%;
+  }
+  .web {
+    display: none;
+  }
+  .mobile {
+    display: block;
+  }
+  .feature {
+    display: none;
+  }
+  .feature-mobile {
+    margin-top: 90px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background: #f8fafc;
+    width: 100%;
+  }
+  .feature-body-2 {
+    margin-top: 32px;
+    width: 228px;
+    height: 184px;
+  }
+  .feature-title {
+    font-family: "Montserrat";
+    font-style: normal;
+    height: 96px;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 32px;
+    margin: 35.69px 24px 20px 24px;
+    width: 327px;
+
+    /* or 133% */
+
+    /*
+    color: #323348;
+    letter-spacing: -0.01em;
+    font-feature-settings: "tnum" on, "lnum" on;
+  }
+  .feature-detail {
+    margin-top: 20px;
+  }
+  .button-waitlist {
+    margin-left: 40px;
+  }
+}
+*/

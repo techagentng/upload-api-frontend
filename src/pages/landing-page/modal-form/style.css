@@ -1,0 +1,205 @@
+*,
+*::before,
+*::after { box-sizing:border-box; }
+a { text-decoration:none; color:inherit; cursor:pointer; }
+button { background-color:transparent; color:inherit; border-width:0; padding:0; cursor:pointer; }
+figure{ margin:0; }
+ul, ol, dd { margin:0; padding:0; list-style:none; }
+h1, h2, h3, h4, h5, h6 { margin:0; font-size:inherit; font-weight:inherit;font-family: Montserrat;}
+p { margin:0; font-family: Montserrat;}
+cite { font-style:normal; }
+fieldset { border-width:0; padding:0; margin:0; }
+
+
+.button {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background: #16a34a;
+  border-radius: 0.25em;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 500;
+  height: 3em;
+  line-height: 3em;
+  padding: 0 1em;
+}
+.button:hover {
+  background-color: #17ac4e;
+}
+
+.details-modal {
+  background: #ffffff;
+  border-radius: 0.5em;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  left: 50%;
+  max-width: 90%;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 30em;
+  text-align: left;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+.details-modal .details-modal-close {
+  align-items: center;
+  color: #111827;
+  display: flex;
+  height: 4.5em;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 4.5em;
+}
+.details-modal .details-modal-close svg {
+  display: block;
+}
+
+.details-modal .details-modal-content {
+  border-top: 1px solid #e0e0e0;
+  pointer-events: all;
+  overflow: auto;
+}
+
+.details-modal-overlay {
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.8);
+  position: fixed;
+  opacity: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+details[open] .details-modal-overlay {
+  pointer-events: all;
+  opacity: 0.5;
+}
+
+details summary {
+  list-style: none;
+}
+details summary:focus {
+  outline: none;
+}
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+code {
+  font-family: Monaco, monospace;
+  line-height: 100%;
+  background-color: #2d2d2c;
+  padding: 0.1em 0.4em;
+  letter-spacing: -0.05em;
+  word-break: normal;
+  border-radius: 7px;
+  color: white;
+  font-weight: normal;
+  font-size: 1.75rem;
+  position: relative;
+  top: -2px;
+}
+
+.container {
+  text-align: center;
+  width: 40em;
+}
+
+.container sup {
+  font-size: 1rem;
+  margin-left: 0.25em;
+  opacity: 0.5;
+  position: relative;
+}
+.formbox {
+  width: 100%;
+  height: 400px;
+  margin-top: 20px;
+}
+.formbox__text {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 0 34px;
+  margin-bottom: 20px;
+}
+.formbox__text, p, h3 {
+  color: #5E6366;
+}
+.formbox__text h3 {
+  font-size: 1.5rem;
+}
+.formbox__text p {
+  font-size: 1.2rem;
+}
+.formbox__text__fields {
+  min-height: 70%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.field__box1, .field__box2 {
+  width: 100%;
+  height: 80px;
+  margin-bottom: 20px;
+  padding: 4px 28px;
+  position: relative;
+}
+input[type=text] {
+  width: 100%;
+  padding: 15px 20px;
+  margin: 3px 0;
+  text-indent: 32px;
+  border: 1px solid #162082;
+  border-radius: 7px;
+}
+.fieldbox {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  bottom: 14px;
+  left: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fieldbox img{
+  width: 27px;
+}
+.fieldclear {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  bottom: 18px;
+  right: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.field__btn {
+  width: 143px;
+  height: 43px;
+  background-color: #162082;
+  margin-left: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 6px;
+}
+label{
+  margin-left: 10px;
+}

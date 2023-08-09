@@ -1,0 +1,13 @@
+.dashboard{
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(45deg, rgba(253, 97, 6, 0.8), rgba(253, 97, 6, 0) 40.71%),
+    linear-gradient(135deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.52%),
+    linear-gradient(200deg, rgba(0, 40, 135, 0.8) , rgba(0, 40, 135, 0) 70.52%),
+    linear-gradient(310.7deg, rgba(73, 199, 0, 0.8) , rgba(73, 199, 0, 0) 70.52%);
+    filter: blur(5px);
+}
+
+/* linear-gradient(45deg, rgba(253, 97, 6, 0.8), rgba(253, 97, 6, 0) 40.71%); */
+/* linear-gradient(135deg, rgba(0,0,255,.8), rgba(0,0,255,0) 45.71%) */
+/* linear-gradient(200deg, rgba(0, 40, 135, 0.8) , rgba(0, 40, 135, 0) 40%) */
