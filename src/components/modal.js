@@ -10,6 +10,9 @@ const Modal = ({ setIsOpen }) => {
     initTE({ Select });
   }, []);
   const [selectedFile, setSelectedFile] = useState([])
+  const [selectedFolder, setSelectedFolder] = useState('uploads'); // Default folder
+  const folderOptions = ['uploads', 'archive1', 'archive2']; // Your folder options
+
   const [close, setClose] = useState(false)
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -70,7 +73,7 @@ const Modal = ({ setIsOpen }) => {
     const selectedFile = event.target.files[0];
 
     if (selectedFile) {
-      setSelectedFile((prevSelectedFiles) => [...prevSelectedFiles, selectedFile]);
+      setSelectedFolder((prevSetSelectedFolder) => [...prevSetSelectedFolder, selectedFolder]);
     }
     console.log(selectedFile)
   };
@@ -171,20 +174,45 @@ const Modal = ({ setIsOpen }) => {
   //   );
   // };
 
-  const handleSubmit = (event) => {
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   let inputs;
+  //   axios({
+  //     method: "POST",
+  //     url: "https://formbold.com/s/98WA1",
+  //     data: inputs,
+  //   })
+  //     .then((r) => {
+  //       console.log("hello");
+  //     })
+  //     .catch((r) => {
+  //       console.log("error");
+  //     });
+  // };
+  
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
-    let inputs;
-    axios({
-      method: "POST",
-      url: "https://formbold.com/s/98WA1",
-      data: inputs,
-    })
-      .then((r) => {
-        console.log("hello");
-      })
-      .catch((r) => {
-        console.log("error");
+
+    if (!selectedFile) {
+      console.error('Please select a file.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('folder', selectedFolder);
+
+    try {
+      const response = await axios.post('http://localhost:8080/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
+      
+      console.log(response.data);
+    } catch (error) {
+      console.error('Upload error:', error);
+    }
   };
   const handleSelectInput = (event) => {
     const selectedValues = Array.from(event.target.selectedOptions, option => option.value);
@@ -226,12 +254,12 @@ const Modal = ({ setIsOpen }) => {
             </p>
           </div>
           <div class="flex items-center justify-center p-12">
-            <div class="mx-auto w-full max-w-[550px] bg-white">
-              <form
+          <form
                 class="py-6 px-9"
-                action="https://formbold.com/s/FORM_ID"
-                method="POST"
+                onSubmit={handleOnSubmit}
               >
+            <div class="mx-auto w-full max-w-[550px] bg-white">
+           
                 <div class="mb-5">
                   <label
                     for="email"
@@ -246,7 +274,6 @@ const Modal = ({ setIsOpen }) => {
                   <option value="4">Archive4</option>
                 </select>
                 </div>
-              <form onSubmit={handleSubmit} autoComplete="off" encType="multipart/form-data">
                 <div class="mb-6 pt-4">
                   <label class="mb-5 block text-xl font-semibold text-[#07074D]">
                     Upload File
@@ -342,17 +369,19 @@ const Modal = ({ setIsOpen }) => {
                     </div>
                   </div>
                 </div>
-                </form>
                 <div>
                   <button
+                  type="submit"
                     class="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
                   >
                     Send File
                   </button>
                 </div>
-              </form>
+               
             </div>
+            </form>
           </div>
+          
           {/* <div className="modal-input-container">
             <label>Name</label>
             <div className="modal-input-section">
