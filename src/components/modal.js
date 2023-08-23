@@ -2,16 +2,25 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Select, initTE } from "tw-elements";
 import "../css/modal.css";
+import styles from "../css/app.module.css";
 import InfoSucess from "./infoSucess";
 import SheetDB from "sheetdb-js";
+// import toast from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css"
 
+// toast.configure()
 const Modal = ({ setIsOpen }) => {
+
+  // const notify = ()=> {
+  //   toast("basic notification")
+  // }
   useEffect(() => {
     initTE({ Select });
   }, []);
   const [selectedFile, setSelectedFile] = useState([])
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  // const [file, setFile] = useState(null);
   const [selectedFolder, setSelectedFolder] = useState('uploads'); // Default folder
-  const folderOptions = ['uploads', 'archive1', 'archive2']; // Your folder options
 
   const [close, setClose] = useState(false)
   const [name, setName] = useState("");
@@ -20,7 +29,6 @@ const Modal = ({ setIsOpen }) => {
   const [agent, setAgent] = useState("");
   const [phone, setPhone] = useState("");
   const [alert, setAlert] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const [progress, setProgress] = useState(248);
 
 
@@ -31,9 +39,8 @@ const Modal = ({ setIsOpen }) => {
     info: "",
   });
   const [inputMessage, setInputMessage] = useState({
-    name: "",
-    phone: "",
-    email: "",
+    folder: "",
+    file: "",
   });
   const setCheckBox1 = () => {
     setAgent("Yes")
@@ -69,72 +76,8 @@ const Modal = ({ setIsOpen }) => {
       return updatedSelectedFiles;
     });
   };
-  const handleFileInputChange = (event) => {
-    const selectedFile = event.target.files[0];
 
-    if (selectedFile) {
-      setSelectedFolder((prevSetSelectedFolder) => [...prevSetSelectedFolder, selectedFolder]);
-    }
-    console.log(selectedFile)
-  };
-  // const handleChangeName = (e) => {
-  //   setName(e.target.value);
-  //   if (e.target.value.trim().length === 0) {
-  //     setInputMessage({ ...inputMessage, name: "Name field is required" });
-  //   } else {
-  //     setInputMessage({ ...inputMessage, name: "" });
-  //   }
-  // };
-
-  // const handleChangeEmail = (e) => {
-  //   const regexp =
-  //     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  //   setEmail(e.target.value);
-  //   if (e.target.value.trim().length === 0) {
-  //     setInputMessage({ ...inputMessage, email: "Email field is required" });
-  //   } else if (!regexp.test(e.target.value)) {
-  //     setInputMessage({ ...inputMessage, email: "Invalid email" });
-  //   } else {
-  //     setInputMessage({ ...inputMessage, email: "" });
-  //   }
-  // };
-  // const handleChangePhone = (e) => {
-  //   setPhone(e.target.value);
-  //   if (e.target.value.trim().length === 0) {
-  //     setInputMessage({ ...inputMessage, phone: "Phone field is required" });
-  //   } else {
-  //     setInputMessage({ ...inputMessage, phone: "" });
-  //   }
-  // };
-
-  // const handleChangeLocal = (e) => {
-  //   setLocal(e.target.value);
-  //   if (e.target.value.trim().length === 0) {
-  //     setInputMessage({ ...inputMessage, local: "Local Govt field is required" });
-  //   } else {
-  //     setInputMessage({ ...inputMessage, local: "" });
-  //   }
-  // };
-  // const submit = (name, phone, email, local, agent) => { //data
-  //   SheetDB.write("https://sheetdb.io/api/v1/ensrcfaf91110", {
-  //     data: {
-  //       name: name,
-  //       phone: phone,
-  //       email: email,
-  //       agent: agent,
-  //       lga: local
-  //     },
-  //   }).then(
-  //     function (result) {
-  //       console.log(result);
-  //       displayMessage("Information sent successfully", "success");
-  //     },
-  //     function (error) {
-  //       console.log(error);
-  //       displayErrorMessage("An error occurred, Please try again", "danger");
-  //     }
-  //   );
-  // };
+ 
   const displayMessage = (text, info) => {
     setAlert(true);
     setMessage({ text: text, info: info });
@@ -142,7 +85,7 @@ const Modal = ({ setIsOpen }) => {
       setAlert(false);
       setMessage({ text: "", info: "" });
       setIsOpen();
-    }, 3500);
+    }, 1000);
   };
   const displayErrorMessage = (text, info) => {
     setAlert(true);
@@ -152,135 +95,144 @@ const Modal = ({ setIsOpen }) => {
       setMessage({ text: "", info: "" });
     }, 5000);
   };
-  // const exists = (email) => {
-  //   SheetDB.read("https://sheetdb.io/api/v1/ensrcfaf91110", {
-  //     search: { email: email },
-  //   }).then(
-  //     function (res) {
-  //       if (res.length === 0) {
-  //         submit(name, phone, email, local, agent);
-  //         removeEmail();
-  //         removeName();
-  //         removePhone();
-  //         removeLocal();
-  //         removeAgent();
-  //       } else {
-  //         displayErrorMessage(`Email already in the wait list `, "danger");
-  //       }
-  //     },
-  //     function (err) {
-  //       console.log(err);
-  //     }
-  //   );
-  // };
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   let inputs;
-  //   axios({
-  //     method: "POST",
-  //     url: "https://formbold.com/s/98WA1",
-  //     data: inputs,
-  //   })
-  //     .then((r) => {
-  //       console.log("hello");
-  //     })
-  //     .catch((r) => {
-  //       console.log("error");
-  //     });
-  // };
   
+  const handleFileInputChange = (event) => {
+    
+    const selectedFile = event.target.files[0];
+    
+    if (selectedFile) {
+      const allowedExtensions = ['pdf', 'docx', 'txt'];
+      // Extract the file extension
+      const fileExtension = selectedFile.name.split('.').pop();
+  
+      // Check if the file extension is "pdf"
+      if (allowedExtensions.includes(fileExtension)) {
+        // Selected file is a PDF, prepare for upload
+        setSelectedFile((prevSelectedFiles) => [...prevSelectedFiles, selectedFile]);
+        console.log("inside handlechange", selectedFile)
+      } else {
+        // Selected file does not have a PDF extension, show an error message or handle accordingly
+        console.error("Selected file is not a PDF");
+        // You can display an error message to the user or handle the case as needed
+      }
+      
+    }
+  };
+
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (!selectedFile) {
       console.error('Please select a file.');
       return;
     }
-
+  
+    if (name.trim().length === 0) {
+      setInputMessage({ ...inputMessage, folder: "Folder field is required" });
+      return;
+    }
+  
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    for(let i=0; i<selectedFile.length; i++) {
+      formData.append("file", selectedFile[i])
+    }
     formData.append('folder', selectedFolder);
-
+    // formData.append('file', selectedFile);
+    
+  
+    console.log("folder", selectedFolder);
+    console.log("tyofff", typeof(selectedFile));
+    console.log("file-bf-postR", selectedFile);
     try {
       const response = await axios.post('http://localhost:8080/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      
-      console.log(response.data);
+  
+      console.log("rdata", response.data);
+  
+      // Log the contents of the formData object
+      console.log("formData entries:");
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}::`, value);
+      }
+  
+      setTimeout(() => {
+        displayMessage("Information sent successfully", "success");
+      }, 200);
     } catch (error) {
       console.error('Upload error:', error);
     }
   };
-  const handleSelectInput = (event) => {
-    const selectedValues = Array.from(event.target.selectedOptions, option => option.value);
-    setSelectedOptions(selectedValues);
+  
+  const handleFolderInputChange = (e) => {
+    const selectedValue = e.target.value 
+    setName(selectedValue);
+      if (e.target.value.trim().length === 0) {
+        setInputMessage({ ...inputMessage, folder: "Folder field is required" });
+      } else {
+        setInputMessage({ ...inputMessage, folder: "" });
+      }
+    
+    const folderName = selectedValue;
+    setSelectedFolder(folderName);
   };
   
-   // Simulating file upload progress
- 
-  // const onSubmit = (e) => {
-  //   console.log(name, email, phone);
-  //   e.preventDefault();
-  //   if (name === "" || email === "" || phone === "" || local === "" || agent === "") {
-  //     setInputMessage({
-  //       name: name === "" ? "Name field is required" : "",
-  //       phone: phone === "" ? "Phone field is required" : "",
-  //       email: email === "" ? "Email field is required" : "",
-  //       local: local === "" ? "Local Govt field is required" : "",
-  //       agent: agent === "" ? "Please select yes or no" : "",
-  //     });
-  //   } else {
-  //     exists(email);
-  //   }
-  // };
 
   return (
-    <div className=" modal-general-container">
+    <div className="modal-general-container">
       <InfoSucess alert={alert} message={message} />
       <div className="modal-container">
         <div className="modal-wrapper">
           <div className="modal-header">
             <div className="modal-title">
-              <p>Upload a document</p>
+              <p className={styles.root}>Upload a document</p>
               <i>
                 <Cancel handleClick={setIsOpen} />
               </i>
             </div>
             <p className="modal-description">
-              This allows us to sign you up as a RoutePay agent to provide cash fulfilment services when the product goes live.
+              This platform allows for storing files for in house use only, the link or access to this site should not be exposed to non residents, failure to comply will attract a penalty.
             </p>
           </div>
-          <div class="flex items-center justify-center p-12">
+          <div class="flex items-center justify-center">
           <form
-                class="py-6 px-9"
+                id="form"
+                class="py-6 px-9 w-full"
                 onSubmit={handleOnSubmit}
               >
             <div class="mx-auto w-full max-w-[550px] bg-white">
            
-                <div class="mb-5">
+                <div>
                   <label
                     for="email"
                     class="mb-3 block text-base font-medium text-[#07074D]"
                   >
                     Upload file to:
                   </label>
-                  <select id="selectInput" value={selectedOptions} onChange={handleSelectInput} data-te-select-init multiple>
-                  <option value="1">Archive1</option>
-                  <option value="2">Archive2</option>
-                  <option value="3">Archive3</option>
-                  <option value="4">Archive4</option>
-                </select>
+                  <div class="w-full">
+                    <select
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500"
+                      name="folder"
+                      value={selectedFolder}
+                      onChange={handleFolderInputChange}
+                    >
+                      <option value="">Select an option</option>
+                      <option value="option1">Option 1</option>
+                      <option value="option2">Option 2</option>
+                      <option value="option3">Option 3</option>
+                    </select>
+                    <p class="mt-1 text-red-600 text-sm">{inputMessage.folder}</p>
+                  </div>
                 </div>
                 <div class="mb-6 pt-4">
-                  <label class="mb-5 block text-xl font-semibold text-[#07074D]">
+                  <label class="block text-xl font-semibold text-[#07074D]">
                     Upload File
                   </label>
 
                   <div class="mb-8">
-                    <input type="file" name="file" id="file" class="sr-only" onChange={handleFileInputChange}/>
+                    <input type="file" name="file" id="file" class="sr-only" onChange={handleFileInputChange} multiple aria-required/>
                     <label
                       for="file"
                       class="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
@@ -297,6 +249,7 @@ const Modal = ({ setIsOpen }) => {
                         >
                           Browse
                         </span>
+                        <p class="mt-1 text-red-600 text-sm">{inputMessage.file}</p>
                       </div>
                     </label>
                   </div>
@@ -333,44 +286,11 @@ const Modal = ({ setIsOpen }) => {
                     ))}
                 
 
-                  <div class="rounded-md bg-[#F5F7FB] py-4 px-8">
-                    <div class="flex items-center justify-between">
-                      <span id="filename" class="truncate pr-3 text-base font-medium text-[#07074D]">
-                        999ner-designcxxxx.png
-                      </span>
-                      <button class="text-[#07074D]">
-                        <svg
-                          width="10"
-                          height="10"
-                          viewBox="0 0 10 10"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M0.279337 0.279338C0.651787 -0.0931121 1.25565 -0.0931121 1.6281 0.279338L9.72066 8.3719C10.0931 8.74435 10.0931 9.34821 9.72066 9.72066C9.34821 10.0931 8.74435 10.0931 8.3719 9.72066L0.279337 1.6281C-0.0931125 1.25565 -0.0931125 0.651788 0.279337 0.279338Z"
-                            fill="currentColor"
-                          />
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M0.279337 9.72066C-0.0931125 9.34821 -0.0931125 8.74435 0.279337 8.3719L8.3719 0.279338C8.74435 -0.0931127 9.34821 -0.0931123 9.72066 0.279338C10.0931 0.651787 10.0931 1.25565 9.72066 1.6281L1.6281 9.72066C1.25565 10.0931 0.651787 10.0931 0.279337 9.72066Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div class="relative mt-5 h-[6px] w-full rounded-lg bg-[#E2E5EF]">
-                      <div
-                        class="absolute left-0 right-0 h-full rounded-lg bg-[#6A64F1]"
-                        style={{width:progress}}
-                      ></div>
-                    </div>
-                  </div>
+          
                 </div>
                 <div>
                   <button
+                  // onClick={notify}
                   type="submit"
                     class="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
                   >
@@ -381,122 +301,6 @@ const Modal = ({ setIsOpen }) => {
             </div>
             </form>
           </div>
-          
-          {/* <div className="modal-input-container">
-            <label>Name</label>
-            <div className="modal-input-section">
-              <div>
-                <i>
-                  <Person />
-                </i>
-                <input
-                  onChange={handleChangeName}
-                  value={name}
-                  name="full_name"
-                  type="text"
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-
-              <i>
-                <Cancel handleClick={removeName} />
-              </i>
-            </div>
-            {inputMessage.name ? (
-              <p className="error-message">{inputMessage.name}</p>
-            ) : null}
-          </div> */}
-
-          {/* <div className="modal-input-container">
-            <label>Phone Number</label>
-            <div className="modal-input-section">
-              <div>
-                <i>
-                  <Phone />
-                </i>
-                <input
-                  onChange={handleChangePhone}
-                  value={phone}
-                  name="phone"
-                  type="text"
-                  placeholder="09151256789"
-                  maxLength="11"
-                  required
-                />
-              </div>
-              <i>
-                <Cancel handleClick={removePhone} />
-              </i>
-            </div>
-            {inputMessage.phone ? (
-              <p className="error-message">{inputMessage.phone}</p>
-            ) : null}
-          </div> */}
-          {/* <div className="bottom modal-input">
-            <label>Email</label>
-            <div className="modal-input-section">
-              <div>
-                <i>
-                  <Email />
-                </i>
-                <input
-                  name="email"
-                  onChange={handleChangeEmail}
-                  value={email}
-                  type="email"
-                  placeholder="johndoe@example.com"
-                  required
-                />
-              </div>
-              <i>
-                <Cancel handleClick={removeEmail} />
-              </i>
-            </div>
-            {inputMessage.email ? (
-              <p className="error-message">{inputMessage.email}</p>
-            ) : null}
-          </div> */}
-          {/* <div className="bottom modal-input">
-            <label>Are you a POS Agent?</label>
-            <div className="modal-checkbox">
-              <div className={`modal-checkbox-yes ${checkbox1}`} onClick={(setCheckBox1)}>
-                <input type="radio" checked={false} style={{ width: "15px", height: "15px" }} />
-                <div className="modal-checkbox-text">Yes</div>
-              </div>
-              <div className={`modal-checkbox-yes ${checkbox2}`} onClick={(setCheckBox2)}>
-                <input type="radio" checked={false} style={{ width: "15px", height: "15px" }} />
-                <div className="modal-checkbox-text">No</div>
-              </div>
-            </div>
-            {inputMessage.agent ? (
-              <p className="error-message">{inputMessage.agent}</p>
-            ) : null}
-          </div> */}
-          {/* <div className="bottom modal-input">
-            <label>LGA</label>
-            <div className="modal-input-section">
-              <div>
-                <i>
-                  <Location />
-                </i>
-                <input
-                  name="local"
-                  onChange={handleChangeLocal}
-                  value={local}
-                  type="text"
-                  placeholder="Where are you located?"
-                  required
-                />
-              </div>
-              <i>
-                <Cancel handleClick={removeLocal} />
-              </i>
-            </div>
-            {inputMessage.local ? (
-              <p className="error-message">{inputMessage.local}</p>
-            ) : null}
-          </div> */}
         
         </div>
       </div>

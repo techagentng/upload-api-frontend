@@ -73,7 +73,7 @@
       align-items: center;
       padding-bottom: 12px;
       position: fixed;
-      z-index: 1000;
+      z-index: 10;
     }
     .logo-mobile{
       width: fit-content;

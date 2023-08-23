@@ -70,8 +70,8 @@ export default function Nav({ faq, feature, handleActive }) {
         <nav>
           <ul>
             <li>
-              <a className='nav-links' href="/terms-and-condition" onClick={scrollDownToTop}>
-                Archive1
+              <a className='nav-links' href="/list" onClick={scrollDownToTop}>
+                Operations
               </a>
             </li>
             <li>

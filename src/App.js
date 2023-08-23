@@ -4,6 +4,7 @@ import TermsAndCondition from "./pages/terms-and-condition/terms-and-conditions"
 import PrivacyPolicy from "./pages/privacy/privacy"
 import Cookies from "./pages/cookies-policy/cookies-policy"
 import Enduser from "./pages/eula/eula"
+import Alfiles from "./pages/allfiles"
 import {useRef} from "react"
 
 const App = () => {
@@ -16,6 +17,8 @@ const App = () => {
         <Route exact path="/privacy" element={<PrivacyPolicy />}></Route>
         <Route exact path="/eula" element={<Enduser />}></Route>
         <Route exact path="/cookies" element={<Cookies />}></Route>
+        <Route exact path="/list" element={<Alfiles />}></Route>
+
       </Routes>
     </Router>  
   );
