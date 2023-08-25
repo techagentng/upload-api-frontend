@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Select, initTE } from "tw-elements";
 import "../css/modal.css";
 import styles from "../css/app.module.css";
 import InfoSucess from "./infoSucess";
@@ -14,61 +13,30 @@ const Modal = ({ setIsOpen }) => {
   // const notify = ()=> {
   //   toast("basic notification")
   // }
-  useEffect(() => {
-    initTE({ Select });
-  }, []);
   const [selectedFile, setSelectedFile] = useState([])
+  const [selectedFileName, setSelectedFileName] = useState("")
+
   const [selectedOptions, setSelectedOptions] = useState([]);
   // const [file, setFile] = useState(null);
   const [selectedFolder, setSelectedFolder] = useState('uploads'); // Default folder
 
   const [close, setClose] = useState(false)
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [local, setLocal] = useState("");
-  const [agent, setAgent] = useState("");
-  const [phone, setPhone] = useState("");
   const [alert, setAlert] = useState(false);
-  const [progress, setProgress] = useState(248);
 
-
-  const [checkbox1, setCheck1] = useState("");
-  const [checkbox2, setCheck2] = useState("");
   const [message, setMessage] = useState({
     text: "",
     info: "",
   });
   const [inputMessage, setInputMessage] = useState({
+    filename: "",
     folder: "",
     file: "",
   });
-  const setCheckBox1 = () => {
-    setAgent("Yes")
-    setCheck1("modal-checkbox-active")
-    setCheck2("")
-  }
-  const setCheckBox2 = () => {
-    setAgent("No")
-    setCheck2("modal-checkbox-active")
-    setCheck1("")
-  }
   const removeName = () => {
     setName((c) => (c = ""));
   };
-  const removeEmail = () => {
-    setEmail((c) => (c = ""));
-  };
-  const removePhone = () => {
-    setPhone((c) => (c = ""));
-  };
-  const removeLocal = () => {
-    setLocal((c) => (c = ""));
-  };
-  const removeAgent = () => {
-    setAgent((c) => (c = ""));
-    setCheck1((c) => (c = ""))
-    setCheck2((c) => (c = ""))
-  };
+  
   const handleClose = (index) => {
     setSelectedFile((prevSelectedFiles) => {
       const updatedSelectedFiles = [...prevSelectedFiles];
@@ -87,17 +55,42 @@ const Modal = ({ setIsOpen }) => {
       setIsOpen();
     }, 1000);
   };
-  const displayErrorMessage = (text, info) => {
-    setAlert(true);
-    setMessage({ text: text, info: info });
-    setTimeout(() => {
-      setAlert(false);
-      setMessage({ text: "", info: "" });
-    }, 5000);
+  // const displayErrorMessage = (text, info) => {
+  //   setAlert(true);
+  //   setMessage({ text: text, info: info });
+  //   setTimeout(() => {
+  //     setAlert(false);
+  //     setMessage({ text: "", info: "" });
+  //   }, 5000);
+  // };
+  
+  const handleFileNameInputChange = (e) => {
+    const selectedFileName = e.target.value 
+    // setSelectedFileName(selectedFileName);
+      if (e.target.value.trim().length === 0) {
+        setInputMessage({ ...inputMessage, filename: "File name field is required" });
+      } else {
+        setInputMessage({ ...inputMessage, filename: "" });
+      }
+    
+    const fileName = selectedFileName;
+    setSelectedFileName(fileName);
+  }; 
+  
+  const handleFolderInputChange = (e) => {
+    const selectedValue = e.target.value 
+    setName(selectedValue);
+      if (e.target.value.trim().length === 0) {
+        setInputMessage({ ...inputMessage, folder: "Folder field is required" });
+      } else {
+        setInputMessage({ ...inputMessage, folder: "" });
+      }
+    
+    const folderName = selectedValue;
+    setSelectedFolder(folderName);
   };
   
   const handleFileInputChange = (event) => {
-    
     const selectedFile = event.target.files[0];
     
     if (selectedFile) {
@@ -126,18 +119,24 @@ const Modal = ({ setIsOpen }) => {
       console.error('Please select a file.');
       return;
     }
+    
   
     if (name.trim().length === 0) {
       setInputMessage({ ...inputMessage, folder: "Folder field is required" });
       return;
     }
   
+    if (selectedFileName.trim().length === 0) {
+      setInputMessage({ ...inputMessage, filename: "File name field is required" });
+      return;
+    }
+    
     const formData = new FormData();
     for(let i=0; i<selectedFile.length; i++) {
       formData.append("file", selectedFile[i])
     }
     formData.append('folder', selectedFolder);
-    // formData.append('file', selectedFile);
+    formData.append('filename', selectedFileName);
     
   
     console.log("folder", selectedFolder);
@@ -166,20 +165,6 @@ const Modal = ({ setIsOpen }) => {
     }
   };
   
-  const handleFolderInputChange = (e) => {
-    const selectedValue = e.target.value 
-    setName(selectedValue);
-      if (e.target.value.trim().length === 0) {
-        setInputMessage({ ...inputMessage, folder: "Folder field is required" });
-      } else {
-        setInputMessage({ ...inputMessage, folder: "" });
-      }
-    
-    const folderName = selectedValue;
-    setSelectedFolder(folderName);
-  };
-  
-
   return (
     <div className="modal-general-container">
       <InfoSucess alert={alert} message={message} />
@@ -203,13 +188,31 @@ const Modal = ({ setIsOpen }) => {
                 onSubmit={handleOnSubmit}
               >
             <div class="mx-auto w-full max-w-[550px] bg-white">
-           
+            <div>
+                  <label
+                    for="email"
+                    class="mb-3 block text-base font-medium text-[#07074D]"
+                  >
+                    File name:
+                  </label>
+                  <div class="w-full">
+                  <input
+                    type="text"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:border-blue-500"
+                    placeholder="Enter a file name"
+                    name="filename"
+                    onChange={handleFileNameInputChange}
+                    value={selectedFileName}
+                  />
+                    <p class="mt-1 text-red-600 text-sm">{inputMessage.filename}</p>
+                  </div>
+                </div>
                 <div>
                   <label
                     for="email"
                     class="mb-3 block text-base font-medium text-[#07074D]"
                   >
-                    Upload file to:
+                    Save file to:
                   </label>
                   <div class="w-full">
                     <select
@@ -219,9 +222,10 @@ const Modal = ({ setIsOpen }) => {
                       onChange={handleFolderInputChange}
                     >
                       <option value="">Select an option</option>
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
+                      <option value="Folder1">Folder 1</option>
+                      <option value="Folder2">Folder 2</option>
+                      <option value="Folder3">Folder 3</option>
+                      <option value="Folder4">Folder 4</option>
                     </select>
                     <p class="mt-1 text-red-600 text-sm">{inputMessage.folder}</p>
                   </div>
@@ -232,7 +236,7 @@ const Modal = ({ setIsOpen }) => {
                   </label>
 
                   <div class="mb-8">
-                    <input type="file" name="file" id="file" class="sr-only" onChange={handleFileInputChange} multiple aria-required/>
+                    <input type="file" name="file" id="file" class="sr-only" onChange={handleFileInputChange} aria-required/>
                     <label
                       for="file"
                       class="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
