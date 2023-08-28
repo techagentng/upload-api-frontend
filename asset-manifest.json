@@ -1,10 +1,10 @@
 {
   "files": {
     "main.css": "/upload-api-frontend/static/css/main.34dd52e8.css",
-    "main.js": "/upload-api-frontend/static/js/main.98563fd3.js",
-    "static/js/200.9410b28c.chunk.js": "/upload-api-frontend/static/js/200.9410b28c.chunk.js",
-    "static/js/539.57a026a1.chunk.js": "/upload-api-frontend/static/js/539.57a026a1.chunk.js",
-    "static/js/787.f7c2c636.chunk.js": "/upload-api-frontend/static/js/787.f7c2c636.chunk.js",
+    "main.js": "/upload-api-frontend/static/js/main.313d47a3.js",
+    "static/js/200.4fd6dc45.chunk.js": "/upload-api-frontend/static/js/200.4fd6dc45.chunk.js",
+    "static/js/539.2a585044.chunk.js": "/upload-api-frontend/static/js/539.2a585044.chunk.js",
+    "static/js/787.ccf544bd.chunk.js": "/upload-api-frontend/static/js/787.ccf544bd.chunk.js",
     "static/media/female.png": "/upload-api-frontend/static/media/female.baa4b02680ab0d809184.png",
     "static/media/Image_eexubx.png": "/upload-api-frontend/static/media/Image_eexubx.da8a21e643639ccebf58.png",
     "static/media/rlogo.svg": "/upload-api-frontend/static/media/rlogo.653b0fe778416fd118b76e37613a2cd4.svg",
@@ -21,13 +21,13 @@
     "static/media/bluebox.svg": "/upload-api-frontend/static/media/bluebox.6b3aebbe0f3c1b43d439d7f10d4f9575.svg",
     "static/media/oshape.svg": "/upload-api-frontend/static/media/oshape.c5a0c7517fa0209999f7f7cff786bf73.svg",
     "main.34dd52e8.css.map": "/upload-api-frontend/static/css/main.34dd52e8.css.map",
-    "main.98563fd3.js.map": "/upload-api-frontend/static/js/main.98563fd3.js.map",
-    "200.9410b28c.chunk.js.map": "/upload-api-frontend/static/js/200.9410b28c.chunk.js.map",
-    "539.57a026a1.chunk.js.map": "/upload-api-frontend/static/js/539.57a026a1.chunk.js.map",
-    "787.f7c2c636.chunk.js.map": "/upload-api-frontend/static/js/787.f7c2c636.chunk.js.map"
+    "main.313d47a3.js.map": "/upload-api-frontend/static/js/main.313d47a3.js.map",
+    "200.4fd6dc45.chunk.js.map": "/upload-api-frontend/static/js/200.4fd6dc45.chunk.js.map",
+    "539.2a585044.chunk.js.map": "/upload-api-frontend/static/js/539.2a585044.chunk.js.map",
+    "787.ccf544bd.chunk.js.map": "/upload-api-frontend/static/js/787.ccf544bd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.34dd52e8.css",
-    "static/js/main.98563fd3.js"
+    "static/js/main.313d47a3.js"
   ]
 }
