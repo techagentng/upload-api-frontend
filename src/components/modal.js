@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import "../css/modal.css";
 import styles from "../css/app.module.css";
 import InfoSucess from "./infoSucess";
+import InfoDanger from "./infoDanger";
+
 import SheetDB from "sheetdb-js";
 // import toast from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css"
@@ -55,14 +57,15 @@ const Modal = ({ setIsOpen }) => {
       setIsOpen();
     }, 1000);
   };
-  // const displayErrorMessage = (text, info) => {
-  //   setAlert(true);
-  //   setMessage({ text: text, info: info });
-  //   setTimeout(() => {
-  //     setAlert(false);
-  //     setMessage({ text: "", info: "" });
-  //   }, 5000);
-  // };
+  
+  const displayErrorMessage = (text, info) => {
+    setAlert(true);
+    setMessage({ text: text, info: info });
+    setTimeout(() => {
+      setAlert(false);
+      setMessage({ text: "", info: "" });
+    }, 500);
+  };
   
   const handleFileNameInputChange = (e) => {
     const selectedFileName = e.target.value 
@@ -158,16 +161,21 @@ const Modal = ({ setIsOpen }) => {
       }
   
       setTimeout(() => {
-        displayMessage("Information sent successfully", "success");
-      }, 200);
+        displayMessage("File saved successfully", "success");
+      }, 500);
     } catch (error) {
       console.error('Upload error:', error);
+      console.error('Type of error:', typeof(error));
+      setTimeout(() => {
+        displayErrorMessage("Duplicate files are not allowed", "danger");
+      }, 300);
     }
   };
   
   return (
     <div className="modal-general-container">
       <InfoSucess alert={alert} message={message} />
+      <InfoDanger alert={alert} message={message} />
       <div className="modal-container">
         <div className="modal-wrapper">
           <div className="modal-header">

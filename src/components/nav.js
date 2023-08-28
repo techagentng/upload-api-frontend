@@ -76,17 +76,17 @@ export default function Nav({ faq, feature, handleActive }) {
             </li>
             <li>
               <a className='nav-links' href="/privacy" onClick={scrollDownToFeature}>
-              Archive2
+              Archives
               </a>
             </li>
             <li>
               <a className='nav-links' href="/eula" onClick={scrollDown}>
-              Archive3
+                Regulation
               </a>
             </li>
             <li>
               <a className='nav-links' href="/cookies" onClick={scrollDown}>
-              Archive4
+                Compliance
               </a>
             </li>
           </ul>

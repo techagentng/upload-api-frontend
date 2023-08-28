@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useRef } from "react";
 import Modal from "../components/modal";
 
-const FileList = () => {
+const FileList = ({ setIsOpen }) => {
 //   const [fileList, setFileList] = useState([]);
 //   const [folderList, setFolderList] = useState([]);
   const [folders, setFolders] = useState(['Folder1', 'Folder2', 'Folder3', 'Folder4']);
@@ -16,6 +16,12 @@ const FileList = () => {
   const [isActive, setIsActive] = useState(false);
   const [hidden, setHidden] = useState({
     display: "none",
+  });
+  const [alert, setAlert] = useState(false);
+
+  const [message, setMessage] = useState({
+    text: "",
+    info: "",
   });
   
   function handleActive() {
@@ -30,6 +36,25 @@ const FileList = () => {
     }
   }
 
+  const displayMessage = (text, info) => {
+    setAlert(true);
+    setMessage({ text: text, info: info });
+    setTimeout(() => {
+      setAlert(false);
+      setMessage({ text: "", info: "" });
+      setIsOpen();
+    }, 1000);
+  };
+  
+  const displayErrorMessage = (text, info) => {
+    setAlert(true);
+    setMessage({ text: text, info: info });
+    setTimeout(() => {
+      setAlert(false);
+      setMessage({ text: "", info: "" });
+    }, 1000);
+  };
+  
   const faq = useRef(null);
   const feature = useRef(null);
   
@@ -40,21 +65,10 @@ const FileList = () => {
         setFiles(response.data.files);
         console.log("hello obj", response.data)
     } catch (error) {
-        console.error('Error fetching folder files:', error);
+        console.error('No file in this folder:', error);
+        displayErrorMessage("Empty folder files:", "danger")
     }
 };
-
-  useEffect(() => {
-    // handleFolderClick()
-    // Fetch the list of files from the backend
-    // axios.get('http://localhost:8080/files')
-    //   .then(response => {
-    //     setFileList(response.data.files);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching file list:', error);
-    //   });
-  }, []);
 
   const handleDownload = async (filename) => {  //onclick download
     try {
@@ -78,6 +92,16 @@ const FileList = () => {
       console.error('Error downloading file:', error);
     }
   };
+  
+  const handleDelete = async (folderName, fileName) => {
+    try {
+        await axios.delete(`http://localhost:8080/delete/${folderName}/${fileName}`);
+        handleFolderClick(selectedFolder);
+        // For example, you can call the handleFolderClick function to refresh the file list for the selected folder
+    } catch (error) {
+        console.error('Error deleting file:', error);
+    }
+};
 
   return (
     <div className="terms-container">
@@ -90,7 +114,7 @@ const FileList = () => {
         <div className="terms-contents" style={{display:"flex", flexDirection: "column", marginBottom:"240px"}}>
         <h1 class="text-3xl mb-4 text-center">Folder list</h1>
         <section className='mx-auto'>
-        <ul className="flex space-x-4">
+        <ul className="flex mb-5 space-x-4">
           {folders.map((folderName, index) => (
             <li
               key={index}
@@ -107,25 +131,34 @@ const FileList = () => {
           ))}
         </ul>
             {selectedFolder && (
-                <div>
-                    <h2 class="text-1xl mt-5 mb-3">Files in {selectedFolder}:</h2>
-                    <div className="flex overflow-x-auto">
-                      {files.map((fileName, index) => (
-                          <div key={index} className="flex-shrink-0 p-4 mr-4 border border-gray-300 rounded-lg">
-                              <p className="text-lg font-semibold">File Name: {fileName.fileName}</p>
-                              <p>Creation Time: {fileName.creationTime}</p>
-                              <p>Modification Time: {fileName.modificationTime}</p>
-                              <button
-                                  onClick={() => handleDownload(fileName.fileName)} // Assuming you pass the filename to the handler
-                                  className="px-4 py-2 mt-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-                              >
-                                  Download
-                              </button>
-                          </div>
-                      ))}
-                  </div>
-
+                <div className="grid grid-cols-3 gap-4">
+                
+            <div className="flex flex-col">
+              
+            {files ? files.map((file, index) => (
+                <div key={index} className="p-4 mb-4 text-left border-gray-300 rounded-lg bordere">
+                    <p className="text-lg font-semibold">File Name: {file.fileName}</p>
+                    <p>Creation Time: {file.creationTime}</p>
+                    <p>Modification Time: {file.modificationTime}</p>
+                    <div className="flex justify-around mt-2">
+                        <button
+                            onClick={() => handleDownload(file.fileName)} // Assuming you pass the filename to the handler
+                            className="text-white bg-blue-500 rounded-md w-30 w-py-0 w 2 w-1px-4 hover:bg-blue-600"
+                        >
+                            Download
+                        </button>
+                        <button
+                            onClick={() => handleDelete(selectedFolder, file.fileName)} // Assuming you pass the filename to the handler
+                            className="w-20 py-2 text-white bg-red-500 rounded-md px15-4 w- hover:bg-red-600"
+                        >
+                            Delete
+                        </button>
+                    </div>
                 </div>
+            )): <p class="text-zinc-500">oops! you have not added a file to this folder</p>}
+        </div>
+            </div>
+            
             )}
         </section>
          </div>
