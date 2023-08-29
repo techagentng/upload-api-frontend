@@ -1,8 +1,8 @@
 {
-  "homepage": "./",
+  "homepage": "https://techagentng.github.io/upload-api-frontend",
   "name": "routepay",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@headlessui/react": "^1.7.16",
     "@testing-library/jest-dom": "^5.16.4",
