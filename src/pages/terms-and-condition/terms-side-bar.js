@@ -7,7 +7,7 @@ function TermsSideBar() {
         <>
         <div className="side-bar">
           <div className="side-content">
-                <h4>Zojapay Policy</h4>
+                <h4>RoutePay Policy</h4>
             <div className="inner-content">
             <Link to="/terms-and-condition" tabindex="1"> <div className="terms-icon">
                 <div className="icon"><FaLongArrowAltRight /></div> <li>Terms & Condition</li>

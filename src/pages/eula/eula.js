@@ -46,7 +46,7 @@ export default function TermsAndCondition(props) {
               <h1 style={{fontSize: "40px"}}>End User License Agreement</h1>
               <div>
             
-                  <p>This End-User License Agreement (this “EULA”) is a legal agreement between you and Zoja Technologies Limited, the author of Routepay including all HTML files, XML files, Java files, graphics files, animation files, data files, technology, development tools, scripts and programs, both in object code and source code (the “Software”), the deliverables provided pursuant to this EULA, which may include associated media, printed materials, and “online” or electronic documentation.</p>
+                  <p>This End-User License Agreement (this “EULA”) is a legal agreement between you and RoutePay Technologies Limited, the author of Routepay including all HTML files, XML files, Java files, graphics files, animation files, data files, technology, development tools, scripts and programs, both in object code and source code (the “Software”), the deliverables provided pursuant to this EULA, which may include associated media, printed materials, and “online” or electronic documentation.</p>
                   <p>By installing, copying, or otherwise using the Software, Licensee agrees to be bound by the terms and conditions set forth in this EULA. If Licensee does not agree to the terms and conditions set forth in this EULA, then Licensee may not download, install, or use the Software.</p>
                   <h5>1. GRANT OF LICENSE</h5>
                   <p>A) Scope of License. Subject to the terms of this EULA, Licensor hereby grants to Licensee a royalty-free, non-exclusive license to possess and to use a copy of the Software.</p>

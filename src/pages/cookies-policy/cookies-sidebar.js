@@ -7,7 +7,7 @@ function CookiesSideBar() {
         <>
         <div className="side-bar">
           <div className="side-content">
-               <h4>Zojapay Policy</h4>
+               <h4>RoutePay Policy</h4>
             <div className="inner-content">
                 <li><Link to="/terms-and-condition">Terms & Condition</Link></li>
                  <li><Link to="/privacy" tabindex="1">Privacy Policy</Link></li>

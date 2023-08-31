@@ -7,7 +7,7 @@ function EnduserSideBar() {
         <>
         <div className="side-bar">
           <div className="side-content">
-                <h4>Zojapay Policy</h4>
+                <h4>Routepay Policy</h4>
             <div className="inner-content">  
             <li><Link to="/terms-and-condition">Terms And Condition</Link></li>
                  <li><Link to="/privacy">Privacy Policy</Link></li>                
