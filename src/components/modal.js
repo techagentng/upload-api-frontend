@@ -21,6 +21,7 @@ const Modal = ({ setIsOpen }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   // const [file, setFile] = useState(null);
   const [selectedFolder, setSelectedFolder] = useState('uploads'); // Default folder
+  const [selectedDocument, setSelectedDocument] = useState(''); 
 
   const [close, setClose] = useState(false)
   const [name, setName] = useState("");
@@ -33,6 +34,7 @@ const Modal = ({ setIsOpen }) => {
   const [inputMessage, setInputMessage] = useState({
     filename: "",
     folder: "",
+    document:"",
     file: "",
   });
   const removeName = () => {
@@ -89,8 +91,21 @@ const Modal = ({ setIsOpen }) => {
         setInputMessage({ ...inputMessage, folder: "" });
       }
     
-    const folderName = selectedValue;
-    setSelectedFolder(folderName);
+    const selectedFolder = selectedValue;
+    setSelectedFolder(selectedFolder);
+  };
+
+  const handleDocumentInputChange = (e) => {
+    const selectedValue = e.target.value 
+    setName(selectedValue);
+      if (e.target.value.trim().length === 0) {
+        setInputMessage({ ...inputMessage, document: "Document field is required" });
+      } else {
+        setInputMessage({ ...inputMessage, document: "" });
+      }
+    
+    const documentName = selectedValue;
+    setSelectedDocument(documentName);
   };
   
   const handleFileInputChange = (event) => {
@@ -236,6 +251,29 @@ const Modal = ({ setIsOpen }) => {
                       <option value="Folder4">Folder 4</option>
                     </select>
                     <p class="mt-1 text-red-600 text-sm">{inputMessage.folder}</p>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    for="email"
+                    class="mb-3 block text-base font-medium text-[#07074D]"
+                  >
+                    Document type:
+                  </label>
+                  <div class="w-full">
+                    <select
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500"
+                      name="folder"
+                      value={selectedDocument}
+                      onChange={handleDocumentInputChange}
+                    >
+                      <option value="">Select an document type</option>
+                      <option value="doc1">doc 1</option>
+                      <option value="doc2">doc 2 2</option>
+                      <option value="doc3">doc 3</option>
+                      <option value="doc4">Doc 4</option>
+                    </select>
+                    <p class="mt-1 text-red-600 text-sm">{inputMessage.document}</p>
                   </div>
                 </div>
                 <div class="mb-6 pt-4">
