@@ -67,13 +67,15 @@ export default function Nav({ faq, feature, handleActive }) {
       ) : null}
 
       <div className="nav">
-        <nav>
+        <nav className=""> 
           <ul>
-            <li>
-              <a className='nav-links' href="/list" onClick={scrollDownToTop}>
+            <li className='px-8 bg-green-500 nav-links'>
+              <a href="/list" onClick={scrollDownToTop}>
                 Operations
               </a>
+          
             </li>
+            
             <li>
               <a className='nav-links' href="/privacy" onClick={scrollDownToFeature}>
               Archives

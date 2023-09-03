@@ -130,19 +130,58 @@ const FileList = ({ setIsOpen }) => {
             </li>
           ))}
         </ul>
-            {selectedFolder && (
-                <div className="grid grid-cols-3 gap-4">
+        </section>
+        <div className="container mx-auto mt-4">
+  <div className="my-6 overflow-x-auto bg-white rounded shadow-md">
+    <table className="w-full table-auto min-w-max">
+      <thead>
+        <tr className="text-sm leading-normal text-gray-600 uppercase bg-gray-200">
+          <th className="px-6 py-3 text-left">File Name</th>
+          <th className="px-6 py-3 text-left">Document Type</th>
+          <th className="px-6 py-3 text-left">Document Number</th>
+          <th className="px-6 py-3 text-left">Department</th>
+          <th className="px-6 py-3 text-left">Division</th>
+          <th className="px-6 py-3 text-left">Classification</th>
+          <th className="px-6 py-3 text-left">Document Author</th>
+          <th className="px-6 py-3 text-left">Date Created</th>
+          <th className="px-6 py-3 text-left">Status</th>
+        </tr>
+      </thead>
+      <tbody className="text-sm font-light text-gray-600">
+        {/* Map through your data and create rows */}
+        {files.map((file, index) => (
+          <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+            <td className="px-6 py-3 text-left">{file.fileName}</td>
+            <td className="px-6 py-3 text-left">{file.documentType}</td>
+            <td className="px-6 py-3 text-left">{file.documentNumber}</td>
+            <td className="px-6 py-3 text-left">{file.department}</td>
+            <td className="px-6 py-3 text-left">{file.division}</td>
+            <td className="px-6 py-3 text-left">{file.classification}</td>
+            <td className="px-6 py-3 text-left">{file.documentAuthor}</td>
+            <td className="px-6 py-3 text-left">{file.dateCreated}</td>
+            <td className="px-6 py-3 text-left">{file.status}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+{/*         
+{selectedFolder && (
+                <div className="grid gap-4 grid1-cols-">
                 
             <div className="flex flex-col">
               
             {files ? files.map((file, index) => (
                 <div key={index} className="p-4 mb-4 text-left border-gray-300 rounded-lg bordere">
                     <p className="text-lg font-semibold">File Name: {file.fileName}</p>
-                    <p>Creation Time: {file.creationTime}</p>
+                    <p>Date Created: {file.dateCreated}</p>
                     <p>Modification Time: {file.modificationTime}</p>
                     <div className="flex justify-around mt-2">
                         <button
-                            onClick={() => handleDownload(file.fileName)} // Assuming you pass the filename to the handler
+                                    onClick={() => handleDownload(file.fileName)} // Assuming you pass the filename to the handler
                             className="text-white bg-blue-500 rounded-md w-30 w-py-0 w 2 w-1px-4 hover:bg-blue-600"
                         >
                             Download
@@ -155,12 +194,11 @@ const FileList = ({ setIsOpen }) => {
                         </button>
                     </div>
                 </div>
-            )): <p class="text-zinc-500">oops! you have not added a file to this folder</p>}
+            )): <p class="text-zinc-500 text-center">oops! you have not added a file to this folder</p>}
         </div>
             </div>
             
-            )}
-        </section>
+            )} */}
          </div>
         <Footer faq={faq} feature={feature} />
       </div>
