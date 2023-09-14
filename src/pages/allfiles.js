@@ -9,7 +9,9 @@ import Modal from "../components/modal";
 const FileList = ({ setIsOpen }) => {
 //   const [fileList, setFileList] = useState([]);
 //   const [folderList, setFolderList] = useState([]);
-  const [folders, setFolders] = useState(['Folder1', 'Folder2', 'Folder3', 'Folder4']);
+  const [folders, setFolders] = useState(['NDPR', 'PCIDSS', 'ISO-27001', 'Compliance', 'Organogram', 'Documentations', 'ServiceLevelAgreement','TAT', 'documents', 'People/culture','info-security-management']);
+  // const [folders, setFolders] = useState([]);
+
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [files, setFiles] = useState([]);
   
@@ -61,7 +63,7 @@ const FileList = ({ setIsOpen }) => {
   const handleFolderClick = async (folderName) => {
     setSelectedFolder(folderName);
     try {
-        const response = await axios.get(`http://localhost:8080/folders/${folderName}/filelist`);
+        const response = await axios.get(`http://localhost:8080/api/v1/folders/${folderName}/filelist`);
         setFiles(response.data.files);
         console.log("hello obj", response.data)
     } catch (error) {

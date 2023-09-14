@@ -3,13 +3,24 @@ import Logo from "./logo";
 import Ham from "../pages/landing-page/icon/hamburger.png";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom"
-
+import { AiFillCaretDown } from "react-icons/ai";
+import { AiFillCaretUp } from "react-icons/ai";
+// import {useAuth, useAuthContext} from "../Contexts/AuthContext";
 
 export default function Nav({ faq, feature, handleActive }) {
+  // const {
+  //   authUser,
+  //   setAuthUser,
+  //   isAuthenticated,
+  //   setIsAuthenticated,
+  // } = useAuthContext();
+  
+  // const auth = useAuthContext();
   const navigate = useNavigate()
   const [active, setActive] = useState(true);
   const [navbg, setNavbg] = useState("landing-navbg1");
-
+  const [isOpen, setIsOpen] = useState(false)
+  
   const scrollDown = () => {
     navigate("/")
     window.scrollTo({
@@ -39,9 +50,9 @@ export default function Nav({ faq, feature, handleActive }) {
     }
     setNavbg((b) => (b = "landing-navbg1"));
     setActive((c) => (c = true));
-  }
-
+  } 
   return (
+    <>
     <div className="landing-header">
       <div className={`logo-mobile ${navbg}`}>
        <Link to="/"><Logo /></Link> 
@@ -69,17 +80,32 @@ export default function Nav({ faq, feature, handleActive }) {
       <div className="nav">
         <nav className=""> 
           <ul>
-            <li className='px-8 bg-green-500 nav-links'>
+            <li className='relative flex items-center content-between px-4'>
               <a href="/list" onClick={scrollDownToTop}>
                 Operations
               </a>
-          
             </li>
             
-            <li>
-              <a className='nav-links' href="/privacy" onClick={scrollDownToFeature}>
-              Archives
+            <li className='relative flex items-center content-between w-[300px]' onClick={() => setIsOpen((prev)=>!prev)}>
+              <a>
+                WorkCentral
               </a>
+              {!isOpen ? (<AiFillCaretUp/>) : (<AiFillCaretDown/>)}
+                {isOpen && (
+                     <div className="absolute left-0 flex flex-col items-start w-full bg-red-300 rounded-lg top-7">
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">NDPR</li>
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">PCIDSS</li>
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">ISO-27001</li>
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">Compliance</li>
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">Organogram</li>
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">Forms/Documentation</li>
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">Service level agreement</li>
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">TAT documents</li>
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">People & culture management</li>
+                     <li className="w-full pt-2 pb-2 pl-2 break-all cursor-pointer hover:bg-slate-400">Information security management</li>
+                   </div>
+                )}
+             
             </li>
             <li>
               <a className='nav-links' href="/eula" onClick={scrollDown}>
@@ -93,12 +119,17 @@ export default function Nav({ faq, feature, handleActive }) {
             </li>
           </ul>
         </nav>
-        <button onClick={handleActive} className="landing-header-button trans"
+        <div className="flex justify-between align-middle">
+        <button onClick={handleActive} className="landing-header-button w-[130px]"
         >
-          Upload document
+          Upload
         </button>
+        <button className="bg-green-500 w-[130px] ml-2 hover:bg-orange-500 hover:text-white">logout</button>
+        {/* <button className="bg-green-500 w-[130px] ml-2 hover:bg-orange-500 hover:text-white">login</button> */}
+        </div>
       </div>
     </div>
+    </>
   );
 }
 
@@ -133,6 +164,7 @@ function NavMobile({
       Join Waitlist
       </button>
     </div>
+    
   );
 }
 
@@ -162,3 +194,4 @@ function Cancel({ handleClick }) {
     </svg>
   );
 }
+
