@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import Landing from "./pages/landing-page/landing";
 import TermsAndCondition from "./pages/terms-and-condition/terms-and-conditions"
 import PrivacyPolicy from "./pages/privacy/privacy"
-import Cookies from "./pages/cookies-policy/cookies-policy"
+import QuickLinks from "./pages/quicklinks/quicklinks"
 import RegisterPage from "./pages/RegisterPage"
 import LoginPage from "./pages/LoginPage"
 import Enduser from "./pages/eula/eula"
@@ -24,7 +24,7 @@ const App = () => {
             <Route exact path="/terms-and-condition" element={<TermsAndCondition faq={faq}/>}></Route>
             <Route exact path="/privacy" element={<PrivacyPolicy />}></Route>
             <Route exact path="/eula" element={<Enduser />}></Route>
-            <Route exact path="/cookies" element={<Cookies />}></Route>
+            <Route exact path="/quicklinks" element={<QuickLinks />}></Route>
             <Route exact path="/list" element={<Alfiles />}></Route>
             <Route exact path="/register" element={<RegisterPage/>}></Route>
             <Route exact path="/login" element={<LoginPage/>}></Route>

@@ -14,7 +14,7 @@ function CookiesSideBar() {
                  <li><Link to="/eula">EULA</Link></li>
                 <Link to="" tabindex="1"> 
                 <div className="terms-icon">
-                  <div className="icon"><FaLongArrowAltRight /></div><li>Cookies Policy</li> 
+                  <div className="icon"><FaLongArrowAltRight /></div><li>QuickLinks</li> 
                 </div>
                 </Link>
             </div>

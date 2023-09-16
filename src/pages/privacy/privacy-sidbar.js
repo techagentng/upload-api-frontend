@@ -14,7 +14,7 @@ function PrivacySidebar() {
                 <div className="icon"><FaLongArrowAltRight /></div> <li>Privacy Policy</li>
                 </div> </Link>
                  <li><Link to="/eula">EULA</Link></li>
-                 <li><Link to="/cookies">Cookies Policy</Link></li>
+                 <li><Link to="/quicklinks">quicklinks</Link></li>
             </div>
           </div>  
         </div>

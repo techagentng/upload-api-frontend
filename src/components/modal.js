@@ -81,11 +81,24 @@ const Modal = ({ setIsOpen }) => {
   };
   
   const handleInputChange = (e) => {
+    // const { name, value } = e.target;
+    // setFormData((prevData) => ({
+    //   ...prevData,
+    //   [name]: value,
+    // }));
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+  // Handle validation here
+  if (name === 'filename') {
+    if (value.trim() === '') {
+      setInputMessage({ ...inputMessage, filename: "File name field is required" });
+    } else {
+      setInputMessage({ ...inputMessage, filename: "" }); // Clear the error message
+    }
+  }
+
+  // Update formData
+  setFormData({ ...formData, [name]: value });
   };
   
   const handleFileChange = (e) => {
@@ -96,6 +109,16 @@ const Modal = ({ setIsOpen }) => {
   };
   const handleOnSubmit = async (event) => {
     event.preventDefault();
+    
+    setInputMessage({
+      filename: "",
+      folder: "",
+      documentType: "",
+      department: "",
+      division: "",
+      docclass: "",
+      file: "",
+    });
   
     if (!formData.file) {
       setInputMessage({ ...inputMessage, file: "File field is required" });
@@ -148,13 +171,16 @@ const Modal = ({ setIsOpen }) => {
     console.log("tyofff", typeof(selectedFile));
     console.log("file-bf-postR", selectedFile);
 
-    
+const accessToken = localStorage.getItem('access_token'); // Retrieve the access token from storage
+
+const config = {
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    'Authorization': `Bearer ${accessToken}`, // Set the Authorization header with the access token
+  },
+};
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/upload', data2append, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-    });
+      const response = await axios.post('http://localhost:8080/api/v1/upload', data2append, config);
   
       console.log("rdata", response.data);
   
@@ -217,7 +243,7 @@ const Modal = ({ setIsOpen }) => {
                     onChange={handleInputChange}
                     value={formData.filename}
                   />
-                    <p class="mt-1 text-red-600 text-sm">{inputMessage.filename}</p>
+                    <p className="mt-1 text-sm text-red-600">{inputMessage.filename}</p>
                   </div>
                 </div>
                 <div>

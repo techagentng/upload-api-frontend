@@ -14,7 +14,7 @@ function TermsSideBar() {
                 </div> </Link>
                  <li><Link to="/privacy">Privacy Policy</Link></li>
                  <li><Link to="/eula">EULA</Link></li>
-                 <li><Link to="/cookies">Cookies Policy</Link></li>
+                 <li><Link to="/quicklinks">quicklinks</Link></li>
             </div>
           </div>  
         </div>

@@ -12,7 +12,7 @@ function EnduserSideBar() {
             <li><Link to="/terms-and-condition">Terms And Condition</Link></li>
                  <li><Link to="/privacy">Privacy Policy</Link></li>                
                  <Link to="/eula"><div className="terms-icon"><div className="icon"><FaLongArrowAltRight /></div><li>EULA</li></div></Link>
-                 <li><Link to="/cookies" tabIndex="1">Cookies Policy</Link></li>
+                 <li><Link to="/quicklinks" tabIndex="1">QuickLinks</Link></li>
             </div>
           </div>  
         </div>

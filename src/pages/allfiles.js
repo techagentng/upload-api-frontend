@@ -154,13 +154,13 @@ const FileList = ({ setIsOpen }) => {
         {files.map((file, index) => (
           <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
             <td className="px-6 py-3 text-left">{file.fileName}</td>
+            <td className="px-6 py-3 text-left">{file.dateCreated}</td>
             <td className="px-6 py-3 text-left">{file.documentType}</td>
             <td className="px-6 py-3 text-left">{file.documentNumber}</td>
             <td className="px-6 py-3 text-left">{file.department}</td>
             <td className="px-6 py-3 text-left">{file.division}</td>
             <td className="px-6 py-3 text-left">{file.classification}</td>
             <td className="px-6 py-3 text-left">{file.documentAuthor}</td>
-            <td className="px-6 py-3 text-left">{file.dateCreated}</td>
             <td className="px-6 py-3 text-left">{file.status}</td>
           </tr>
         ))}
