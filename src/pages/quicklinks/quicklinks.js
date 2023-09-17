@@ -47,6 +47,9 @@ export default function QuickLinks(props) {
                 <div className="cookies w-[400px]">
                   <p><a href="https://portal.routepay.com/">Production Link -Merchant portal</a></p>
                   <p><Link to="https://portalqa.routepay.com/">RoutePay Merchant QA Link</Link></p>
+                  <p><Link to="https://billsdev.fastrouteng.com/">fastroute Dev link</Link></p>
+                  <p><Link to="https://dev.azure.com/">Azure cloud</Link></p>  
+                  <p><Link to="https://routepay.atlassian.net/wiki/home">Confluence</Link></p>
                 </div>
               </div>
           </section>

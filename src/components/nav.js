@@ -55,7 +55,7 @@ export default function Nav({ faq, feature, handleActive }) {
         )}
 
         <nav className="nav">
-          <ul className="flex space-x-4">
+          <ul className="flex ml-4 space-x-4">
             <li className="relative">
               <a href="/list" onClick={() => scrollDownToTop()}> {/* Fix: Use scrollDownToTop function */}
                 Operations
@@ -73,7 +73,7 @@ export default function Nav({ faq, feature, handleActive }) {
               </a>
 
               {isOpen && (
-                <div className="absolute left-0 flex flex-col items-start w-[300px] bg-red-300 rounded-lg top-7">
+                <div className="absolute left-0 flex flex-col items-start w-[300px] bg-red-100 rounded-lg top-7">
                   <a href="#" className="w-full p-2 break-all hover:bg-slate-400">
                     NDPR
                   </a>
@@ -89,7 +89,7 @@ export default function Nav({ faq, feature, handleActive }) {
             </li>
 
             <li>
-              <a className="nav-links" href="#" onClick={() => scrollDown(faq.current.offsetTop)}>
+              <a className="nav-links" href="/quicklinks" onClick={() => scrollDown(faq.current.offsetTop)}>
                 Quick links
               </a>
             </li>
@@ -100,7 +100,7 @@ export default function Nav({ faq, feature, handleActive }) {
           <button onClick={handleActive} className="landing-header-button w-[130px]">
             Upload
           </button>
-          <button className="bg-green-500 w-[130px] ml-2 hover:bg-orange-500 hover:text-white">
+          <button className="bg-orange-500 text-white w-[130px] ml-2  hover:bg-orange-300 hover:text-white">
             Logout
           </button>
         </div>
