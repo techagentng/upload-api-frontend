@@ -13,7 +13,7 @@ export default function Hero({ handleClick }) {
     <div className="hero-section">
       <div className="hero-content">
         <p className="hero-info">
-          Document management platform for RoutePay <br className="h2" />
+          Document Management System<br className="h2" />
         </p>
         <p className="hero-join-text">
           This tool will enable routpay staff to upload <br className="h2" />

@@ -18,13 +18,14 @@ const Modal = ({ setIsOpen }) => {
   const [selectedFile, setSelectedFile] = useState([])
   const [selectedFileName, setSelectedFileName] = useState("")
 
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  // const [file, setFile] = useState(null);
   const [selectedFolder, setSelectedFolder] = useState('uploads'); // Default folder
-  const [selectedDocument, setSelectedDocument] = useState(''); 
+  const [documentType, setDocumentType] = useState(''); 
+  const [department, setDepartment] = useState(''); 
+  const [division, setDivision] = useState(''); 
+  const [docClass, setDocClass] = useState(''); 
 
   const [close, setClose] = useState(false)
-  const [name, setName] = useState("");
+  const [folderName, setFolderName] = useState("");
   const [alert, setAlert] = useState(false);
 
   const [message, setMessage] = useState({
@@ -34,12 +35,23 @@ const Modal = ({ setIsOpen }) => {
   const [inputMessage, setInputMessage] = useState({
     filename: "",
     folder: "",
-    document:"",
+    documentType:"",
+    department:"",
+    division:"",
+    docclass:"",
     file: "",
   });
-  const removeName = () => {
-    setName((c) => (c = ""));
-  };
+
+
+  const [formData, setFormData] = useState({
+    filename: '',
+    folder: '',
+    doctype: '',
+    department: '',
+    division: '',
+    docclass: '',
+    file: null, // To store the selected file
+  });
   
   const handleClose = (index) => {
     setSelectedFile((prevSelectedFiles) => {
@@ -48,8 +60,7 @@ const Modal = ({ setIsOpen }) => {
       return updatedSelectedFiles;
     });
   };
-
- 
+   
   const displayMessage = (text, info) => {
     setAlert(true);
     setMessage({ text: text, info: info });
@@ -69,103 +80,107 @@ const Modal = ({ setIsOpen }) => {
     }, 500);
   };
   
-  const handleFileNameInputChange = (e) => {
-    const selectedFileName = e.target.value 
-    // setSelectedFileName(selectedFileName);
-      if (e.target.value.trim().length === 0) {
-        setInputMessage({ ...inputMessage, filename: "File name field is required" });
-      } else {
-        setInputMessage({ ...inputMessage, filename: "" });
-      }
-    
-    const fileName = selectedFileName;
-    setSelectedFileName(fileName);
-  }; 
-  
-  const handleFolderInputChange = (e) => {
-    const selectedValue = e.target.value 
-    setName(selectedValue);
-      if (e.target.value.trim().length === 0) {
-        setInputMessage({ ...inputMessage, folder: "Folder field is required" });
-      } else {
-        setInputMessage({ ...inputMessage, folder: "" });
-      }
-    
-    const selectedFolder = selectedValue;
-    setSelectedFolder(selectedFolder);
-  };
+  const handleInputChange = (e) => {
+    // const { name, value } = e.target;
+    // setFormData((prevData) => ({
+    //   ...prevData,
+    //   [name]: value,
+    // }));
+    const { name, value } = e.target;
 
-  const handleDocumentInputChange = (e) => {
-    const selectedValue = e.target.value 
-    setName(selectedValue);
-      if (e.target.value.trim().length === 0) {
-        setInputMessage({ ...inputMessage, document: "Document field is required" });
-      } else {
-        setInputMessage({ ...inputMessage, document: "" });
-      }
-    
-    const documentName = selectedValue;
-    setSelectedDocument(documentName);
-  };
-  
-  const handleFileInputChange = (event) => {
-    const selectedFile = event.target.files[0];
-    
-    if (selectedFile) {
-      const allowedExtensions = ['pdf', 'docx', 'txt'];
-      // Extract the file extension
-      const fileExtension = selectedFile.name.split('.').pop();
-  
-      // Check if the file extension is "pdf"
-      if (allowedExtensions.includes(fileExtension)) {
-        // Selected file is a PDF, prepare for upload
-        setSelectedFile((prevSelectedFiles) => [...prevSelectedFiles, selectedFile]);
-        console.log("inside handlechange", selectedFile)
-      } else {
-        // Selected file does not have a PDF extension, show an error message or handle accordingly
-        console.error("Selected file is not a PDF");
-        // You can display an error message to the user or handle the case as needed
-      }
-      
+  // Handle validation here
+  if (name === 'filename') {
+    if (value.trim() === '') {
+      setInputMessage({ ...inputMessage, filename: "File name field is required" });
+    } else {
+      setInputMessage({ ...inputMessage, filename: "" }); // Clear the error message
     }
-  };
+  }
 
+  // Update formData
+  setFormData({ ...formData, [name]: value });
+  };
+  
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      file: e.target.files[0],
+    });
+  };
   const handleOnSubmit = async (event) => {
     event.preventDefault();
+    
+    setInputMessage({
+      filename: "",
+      folder: "",
+      documentType: "",
+      department: "",
+      division: "",
+      docclass: "",
+      file: "",
+    });
   
-    if (!selectedFile) {
-      console.error('Please select a file.');
+    if (!formData.file) {
+      setInputMessage({ ...inputMessage, file: "File field is required" });
       return;
     }
     
-  
-    if (name.trim().length === 0) {
-      setInputMessage({ ...inputMessage, folder: "Folder field is required" });
-      return;
-    }
-  
-    if (selectedFileName.trim().length === 0) {
+    if (formData.filename.trim().length === 0) {
       setInputMessage({ ...inputMessage, filename: "File name field is required" });
       return;
     }
-    
-    const formData = new FormData();
-    for(let i=0; i<selectedFile.length; i++) {
-      formData.append("file", selectedFile[i])
-    }
-    formData.append('folder', selectedFolder);
-    formData.append('filename', selectedFileName);
-    
   
+    if (formData.folder.trim().length === 0) {
+      setInputMessage({ ...inputMessage, folder: "Folder field is required" });
+      return;
+    }
+
+    if (formData.doctype.trim().length === 0) {
+      setInputMessage({ ...inputMessage, documentType: "Document type field is required" });
+      return;
+    }
+
+    if (formData.department.trim().length === 0) {
+      setInputMessage({ ...inputMessage, department: "Department field is required" });
+      return;
+    }
+    
+    if (formData.division.trim().length === 0) {
+      setInputMessage({ ...inputMessage, division: "Division field is required" });
+      return;
+    }
+    
+    if (formData.docclass.trim().length === 0) {
+      setInputMessage({ ...inputMessage, docClass: "Document class field is required" });
+      return;
+    }
+    
+    const data2append = new FormData();
+    data2append.append('filename', formData.filename);
+    data2append.append('folder', formData.folder);
+    data2append.append('doctype', formData.doctype);
+    data2append.append('department', formData.department);
+    data2append.append('division', formData.division);
+    data2append.append('docclass', formData.docclass);
+    data2append.append('file', formData.file)
+    
+      for(let i=0; i<formData.file.length; i++) {
+    formData.append("file", formData.file[i])
+  }
     console.log("folder", selectedFolder);
     console.log("tyofff", typeof(selectedFile));
     console.log("file-bf-postR", selectedFile);
+
+const accessToken = localStorage.getItem('access_token'); // Retrieve the access token from storage
+
+const config = {
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    'Authorization': `Bearer ${accessToken}`, // Set the Authorization header with the access token
+  },
+};
     try {
-      const response = await axios.post('http://localhost:8080/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post('http://localhost:8080/api/v1/upload', data2append, config);
   
       console.log("rdata", response.data);
   
@@ -174,7 +189,7 @@ const Modal = ({ setIsOpen }) => {
       for (let [key, value] of formData.entries()) {
         console.log(`${key}::`, value);
       }
-  
+      
       setTimeout(() => {
         displayMessage("File saved successfully", "success");
       }, 500);
@@ -213,8 +228,9 @@ const Modal = ({ setIsOpen }) => {
             <div class="mx-auto w-full max-w-[550px] bg-white">
             <div>
                   <label
-                    for="email"
-                    class="mb-3 block text-base font-medium text-[#07074D]"
+                    for="filename"
+                    class="mb-1 block text-base font-medium text-[#07074D]"
+                    name="file_name"
                   >
                     File name:
                   </label>
@@ -224,16 +240,16 @@ const Modal = ({ setIsOpen }) => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:border-blue-500"
                     placeholder="Enter a file name"
                     name="filename"
-                    onChange={handleFileNameInputChange}
-                    value={selectedFileName}
+                    onChange={handleInputChange}
+                    value={formData.filename}
                   />
-                    <p class="mt-1 text-red-600 text-sm">{inputMessage.filename}</p>
+                    <p className="mt-1 text-sm text-red-600">{inputMessage.filename}</p>
                   </div>
                 </div>
                 <div>
                   <label
                     for="email"
-                    class="mb-3 block text-base font-medium text-[#07074D]"
+                    class="mb-1 block text-base font-medium text-[#07074D]"
                   >
                     Save file to:
                   </label>
@@ -241,40 +257,119 @@ const Modal = ({ setIsOpen }) => {
                     <select
                       class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500"
                       name="folder"
-                      value={selectedFolder}
-                      onChange={handleFolderInputChange}
+                      value={formData.folder}
+                      onChange={handleInputChange}
                     >
-                      <option value="">Select an option</option>
-                      <option value="Folder1">Folder 1</option>
-                      <option value="Folder2">Folder 2</option>
-                      <option value="Folder3">Folder 3</option>
-                      <option value="Folder4">Folder 4</option>
+                      <option value="">Select a repository</option>
+                      <option value="NDPR">NDPR</option>
+                      <option value="PCIDSS">PCIDSS</option>
+                      <option value="ISO-27001">ISO-27001</option>
+                      <option value="Compliance">Compliance</option>
+                      <option value="Organogram">Organogram</option>
+                      <option value="Documentations">Documentation and forms</option>
+                      <option value="SLA">Service level agreement</option>
+                      <option value="TAT">TAT documentation</option>
+                      <option value="culture">People and culture management</option>
+                      <option value="Information security management">Information security management</option>
                     </select>
                     <p class="mt-1 text-red-600 text-sm">{inputMessage.folder}</p>
                   </div>
                 </div>
                 <div>
                   <label
-                    for="email"
-                    class="mb-3 block text-base font-medium text-[#07074D]"
+                    for="doctype"
+                    class="mb-1 block text-base font-medium text-[#07074D]"
+                    id="doctype"
                   >
                     Document type:
                   </label>
                   <div class="w-full">
                     <select
                       class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500"
-                      name="folder"
-                      value={selectedDocument}
-                      onChange={handleDocumentInputChange}
+                      name="doctype"
+                      value={formData.doctype}
+                      onChange={handleInputChange}
                     >
-                      <option value="">Select an document type</option>
-                      <option value="doc1">doc 1</option>
-                      <option value="doc2">doc 2 2</option>
-                      <option value="doc3">doc 3</option>
-                      <option value="doc4">Doc 4</option>
+                      <option value="">Select a document type</option>
+                      <option value="Standard Operations procedure">Standard Operations procedure</option>
+                      <option value="Internal memo">Internal memo</option>
+                      <option value="General documents">General document</option>
                     </select>
                     <p class="mt-1 text-red-600 text-sm">{inputMessage.document}</p>
                   </div>
+                </div>
+                <div>
+                  <label
+                    for="dept"
+                    class="mb-1 block text-base font-medium text-[#07074D]"
+                  >
+                    Department:
+                  </label>
+                  <div class="w-full">
+                    <select
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500"
+                      name="department"
+                      value={formData.department}
+                      onChange={handleInputChange}
+                      id="dept"
+                    >
+                      <option value="">Select a department</option>
+                      <option value="operations">Operations</option>
+                      <option value="marketing">Marketing</option>
+                      <option value="doc3">Enterprise</option>
+                      <option value="doc4">VAS</option>
+                    </select>
+                    <p class="mt-1 text-red-600 text-sm">{inputMessage.department}</p>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    for="division"
+                    class="mb-1 block text-base font-medium text-[#07074D]"
+                  >
+                    Division:
+                  </label>
+                  <div class="w-full">
+                    <select
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500"
+                      name="division"
+                      value={formData.division}
+                      onChange={handleInputChange}
+                      id="division"
+                    >
+                      <option value="">Select a division</option>
+                      <option value="division1">division1</option>
+                      <option value="division2">division2</option>
+                      <option value="division3">division3</option>
+                      <option value="division4">division4</option>
+                    </select>
+                    <p class="mt-1 text-red-600 text-sm">{inputMessage.division}</p>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    for="docclass"
+                    class="mb-1 block text-base font-medium text-[#07074D]"
+                  >
+                    Document class:
+                  </label>
+                  <div class="w-full">
+                    <select
+                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500"
+                      name="docclass"
+                      value={formData.docclass}
+                      onChange={handleInputChange}
+                      id="docclass"
+                    >
+                      <option value="">Select a document class</option>
+                      <option value="classA">class A</option>
+                      <option value="classB">class B</option>
+                      <option value="classC">class C</option>
+                      <option value="classD">class D</option>
+                    </select>
+                    <p class="mt-1 text-red-600 text-sm">{inputMessage.docClass}</p>
+                  </div>
+                  
                 </div>
                 <div class="mb-6 pt-4">
                   <label class="block text-xl font-semibold text-[#07074D]">
@@ -282,7 +377,7 @@ const Modal = ({ setIsOpen }) => {
                   </label>
 
                   <div class="mb-8">
-                    <input type="file" name="file" id="file" class="sr-only" onChange={handleFileInputChange} aria-required/>
+                    <input type="file" name="file" accept=".jpg,.jpeg,.png,.pdf" id="file" class="sr-only" onChange={handleFileChange} aria-required/>
                     <label
                       for="file"
                       class="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
@@ -299,7 +394,6 @@ const Modal = ({ setIsOpen }) => {
                         >
                           Browse
                         </span>
-                        <p class="mt-1 text-red-600 text-sm">{inputMessage.file}</p>
                       </div>
                     </label>
                   </div>

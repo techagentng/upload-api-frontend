@@ -3,105 +3,111 @@ import Logo from "./logo";
 import Ham from "../pages/landing-page/icon/hamburger.png";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom"
-
+import { AiFillCaretDown } from "react-icons/ai";
+import { AiFillCaretUp } from "react-icons/ai";
+// import {useAuth, useAuthContext} from "../Contexts/AuthContext";
 
 export default function Nav({ faq, feature, handleActive }) {
-  const navigate = useNavigate()
-  const [active, setActive] = useState(true);
-  const [navbg, setNavbg] = useState("landing-navbg1");
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const scrollDown = () => {
-    navigate("/")
+  const scrollDown = (offsetTop) => {
+    navigate('/');
     window.scrollTo({
-      top: faq.current.offsetTop,
-      behavior: "smooth",
+      top: offsetTop,
+      behavior: 'smooth',
     });
   };
-  const scrollDownToFeature = () => {
-    navigate("/")
-    window.scrollTo({
-      top: feature.current.offsetTop,
-      behavior: "smooth",
-    });
-  };
+
   const scrollDownToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
-  function handleClick() {
-    if (active) {
-      setActive((c) => (c = false));
-      setNavbg((b) => (b = "landing-navbg"));
-      return;
-    }
-    setNavbg((b) => (b = "landing-navbg1"));
-    setActive((c) => (c = true));
-  }
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
 
   return (
-    <div className="landing-header">
-      <div className={`logo-mobile ${navbg}`}>
-       <Link to="/"><Logo /></Link> 
-        {active ? (
+    <>
+      <div className="flex items-center justify-between landing-header">
+        <div className={`logo-mobile landing-navbg1`}>
+          <Link to="/">
+            <Logo />
+          </Link>
           <img
             className="nav-cancel"
-            onClick={handleClick}
-            src={Ham}
-            alt="Hamburger"
+            onClick={handleToggle}
+            src={isOpen ? Ham : Cancel} // Toggle Ham and Cancel icons based on the isOpen state
+            alt="Toggle Navigation"
           />
-        ) : (
-          <Cancel handleClick={handleClick} />
+        </div>
+
+        {!isOpen && (
+          <NavMobile
+            handleClick={handleActive}
+            scrollDown={scrollDown}
+            scrollDownToTop={scrollDownToTop} // Fix: Use scrollDownToTop function
+            scrollDownToFeature={() => scrollDown(feature.current.offsetTop)}
+          />
         )}
-      </div>
 
-      {!active ? (
-        <NavMobile
-          handleClick={handleActive}
-          scrollDown={scrollDown}
-          scrollDownToTop={scrollDownToTop}
-          scrollDownToFeature={scrollDownToFeature}
-        />
-      ) : null}
-
-      <div className="nav">
-        <nav className=""> 
-          <ul>
-            <li className='px-8 bg-green-500 nav-links'>
-              <a href="/list" onClick={scrollDownToTop}>
+        <nav className="nav">
+          <ul className="flex ml-4 space-x-4">
+            <li className="relative">
+              <a href="/list" onClick={() => scrollDownToTop()}> {/* Fix: Use scrollDownToTop function */}
                 Operations
               </a>
-          
             </li>
-            
-            <li>
-              <a className='nav-links' href="/privacy" onClick={scrollDownToFeature}>
-              Archives
+
+            <li className="relative" onClick={handleToggle}>
+              <a href="#" className="flex items-center">
+                WorkCentral{' '}
+                {isOpen ? (
+                  <AiFillCaretUp className="ml-1" />
+                ) : (
+                  <AiFillCaretDown className="ml-1" />
+                )}
               </a>
+
+              {isOpen && (
+                <div className="absolute left-0 flex flex-col items-start w-[300px] bg-red-100 rounded-lg top-7">
+                  <a href="#" className="w-full p-2 break-all hover:bg-slate-400">
+                    NDPR
+                  </a>
+                  <a href="#" className="w-full p-2 break-all hover:bg-slate-400">
+                    PCIDSS
+                  </a>
+                  <a href="#" className="w-full p-2 break-all hover:bg-slate-400">
+                    Regulations on a long text
+                  </a>
+                  {/* Add more menu items as needed */}
+                </div>
+              )}
             </li>
+
             <li>
-              <a className='nav-links' href="/eula" onClick={scrollDown}>
-                Regulation
-              </a>
-            </li>
-            <li>
-              <a className='nav-links' href="/cookies" onClick={scrollDown}>
-                Compliance
+              <a className="nav-links" href="/quicklinks" onClick={() => scrollDown(faq.current.offsetTop)}>
+                Quick links
               </a>
             </li>
           </ul>
         </nav>
-        <button onClick={handleActive} className="landing-header-button trans"
-        >
-          Upload document
-        </button>
+
+        <div className="flex">
+          <button onClick={handleActive} className="landing-header-button w-[130px]">
+            Upload
+          </button>
+          <button className="bg-orange-500 text-white w-[130px] ml-2  hover:bg-orange-300 hover:text-white">
+            Logout
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
-
 function NavMobile({
   handleClick,
   scrollDownToTop,
@@ -133,6 +139,7 @@ function NavMobile({
       Join Waitlist
       </button>
     </div>
+    
   );
 }
 
@@ -162,3 +169,4 @@ function Cancel({ handleClick }) {
     </svg>
   );
 }
+

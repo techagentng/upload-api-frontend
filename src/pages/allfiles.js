@@ -9,7 +9,9 @@ import Modal from "../components/modal";
 const FileList = ({ setIsOpen }) => {
 //   const [fileList, setFileList] = useState([]);
 //   const [folderList, setFolderList] = useState([]);
-  const [folders, setFolders] = useState(['Folder1', 'Folder2', 'Folder3', 'Folder4']);
+  const [folders, setFolders] = useState(['NDPR', 'PCIDSS', 'ISO-27001', 'Compliance', 'Organogram', 'Documentations', 'ServiceLevelAgreement','TAT', 'documents', 'People/culture','info-security-management']);
+  // const [folders, setFolders] = useState([]);
+
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [files, setFiles] = useState([]);
   
@@ -61,7 +63,7 @@ const FileList = ({ setIsOpen }) => {
   const handleFolderClick = async (folderName) => {
     setSelectedFolder(folderName);
     try {
-        const response = await axios.get(`http://localhost:8080/folders/${folderName}/filelist`);
+        const response = await axios.get(`http://localhost:8080/api/v1/folders/${folderName}/filelist`);
         setFiles(response.data.files);
         console.log("hello obj", response.data)
     } catch (error) {
@@ -118,7 +120,7 @@ const FileList = ({ setIsOpen }) => {
           {folders.map((folderName, index) => (
             <li
               key={index}
-              className="overflow-hidden transition-transform transform border rounded-lg cursor-pointer hover:scale-105"
+              className="overflow-hidden transition-transform transform border border-none rounded-lg cursor-pointer hover:scale-05"
             >
               <img
                 src={folder}
@@ -132,39 +134,48 @@ const FileList = ({ setIsOpen }) => {
         </ul>
         </section>
         <div className="container mx-auto mt-4">
-  <div className="my-6 overflow-x-auto bg-white rounded shadow-md">
-    <table className="w-full table-auto min-w-max">
-      <thead>
-        <tr className="text-sm leading-normal text-gray-600 uppercase bg-gray-200">
-          <th className="px-6 py-3 text-left">File Name</th>
-          <th className="px-6 py-3 text-left">Document Type</th>
-          <th className="px-6 py-3 text-left">Document Number</th>
-          <th className="px-6 py-3 text-left">Department</th>
-          <th className="px-6 py-3 text-left">Division</th>
-          <th className="px-6 py-3 text-left">Classification</th>
-          <th className="px-6 py-3 text-left">Document Author</th>
-          <th className="px-6 py-3 text-left">Date Created</th>
-          <th className="px-6 py-3 text-left">Status</th>
+        <div className="my-6 overflow-x-auto bg-white rounded shadow-md">
+  <table className="w-full table-auto min-w-max">
+    <thead>
+      <tr className="text-sm leading-normal text-gray-600 uppercase bg-gray-200">
+        <th className="px-6 py-3 text-left"></th>
+        <th className="px-6 py-3 text-left">File Name</th>
+        <th className="px-6 py-3 text-left">Document Type</th>
+        <th className="px-6 py-3 text-left">Document Number</th>
+        <th className="px-6 py-3 text-left">Department</th>
+        <th className="px-6 py-3 text-left">Division</th>
+        <th className="px-6 py-3 text-left">Classification</th>
+        <th className="px-6 py-3 text-left">Document Author</th>
+        <th className="px-6 py-3 text-left">Date Created</th>
+        <th className="px-6 py-3 text-left">Status</th>
+      </tr>
+    </thead>
+    <tbody className="text-sm font-light text-gray-600">
+      {files.map((file, index) => (
+        <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+          <td className="px-2 py-3">
+            <button
+              className="text-red-500 hover:text-red-700"
+              onClick={() => handleDelete(file.id)} // Replace with your delete logic
+            >
+              Delete
+            </button>
+          </td>
+          <td className="px-4 py-3 text-left">{file.fileName}</td>
+          <td className="px-4 py-3 text-left">{file.dateCreated}</td>
+          <td className="px-4 py-3 text-left">{file.documentType}</td>
+          <td className="px-4 py-3 text-left">{file.documentNumber}</td>
+          <td className="px-4 py-3 text-left">{file.department}</td>
+          <td className="px-4 py-3 text-left">{file.division}</td>
+          <td className="px-4 py-3 text-left">{file.classification}</td>
+          <td className="px-4 py-3 text-left">{file.documentAuthor}</td>
+          <td className="px-4 py-3 text-left">{file.status}</td>
         </tr>
-      </thead>
-      <tbody className="text-sm font-light text-gray-600">
-        {/* Map through your data and create rows */}
-        {files.map((file, index) => (
-          <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-            <td className="px-6 py-3 text-left">{file.fileName}</td>
-            <td className="px-6 py-3 text-left">{file.documentType}</td>
-            <td className="px-6 py-3 text-left">{file.documentNumber}</td>
-            <td className="px-6 py-3 text-left">{file.department}</td>
-            <td className="px-6 py-3 text-left">{file.division}</td>
-            <td className="px-6 py-3 text-left">{file.classification}</td>
-            <td className="px-6 py-3 text-left">{file.documentAuthor}</td>
-            <td className="px-6 py-3 text-left">{file.dateCreated}</td>
-            <td className="px-6 py-3 text-left">{file.status}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+      ))}
+    </tbody>
+  </table>
+</div>
+
 </div>
 
 

@@ -13,7 +13,7 @@ export default function CookiePop(){
         <>
         {close ? null : (
              <div className="cookie-pop">
-             <p>By using this website, you agree to our <Link to="/cookies">cookie policy</Link></p>
+             <p>By using this website, you agree to our <Link to="/quicklinks">cookie policy</Link></p>
              <button onClick={handleClose}>Dismiss</button>
          </div>
         )}
