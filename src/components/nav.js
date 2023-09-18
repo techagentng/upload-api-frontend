@@ -95,6 +95,9 @@ export default function Nav({ faq, feature, handleActive }) {
                   <a href="/folder/ISO-27001" className="w-full p-2 break-all hover:bg-slate-400">
                   ISO-27001
                   </a>
+                  {/* <a href="/folder/Compliance" className="w-full p-2 break-all hover:bg-slate-400">
+                  Compliance
+                  </a> */}
                   <a href="/folder/Compliance" className="w-full p-2 break-all hover:bg-slate-400">
                   Compliance
                   </a>
@@ -114,7 +117,7 @@ export default function Nav({ faq, feature, handleActive }) {
                   culture
                   </a>
                   <a href="/folder/Information security management" className="w-full p-2 break-all hover:bg-slate-400">
-                  Information security management
+                  Information security management.
                   </a>
                   {/* Add more menu items as needed */}
                 </div>
