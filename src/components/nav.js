@@ -5,14 +5,26 @@ import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom"
 import { AiFillCaretDown } from "react-icons/ai";
 import { AiFillCaretUp } from "react-icons/ai";
+import axios from "../api/axios";
 // import {useAuth, useAuthContext} from "../Contexts/AuthContext";
 
 export default function Nav({ faq, feature, handleActive }) {
-  const navigate = useNavigate();
+ const navigate = useNavigate()
+  const handleLogout = async () => {
+    try {
+      // Send a request to the server's logout endpoint
+      const response = await axios.post('/logout'); // Adjust the endpoint URL as needed
+      navigate('/home')
+      // Handle the server response (e.g., clear user session, update UI, etc.)
+      // For simplicity, we'll just log the response
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+  
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollDown = (offsetTop) => {
-    navigate('/');
     window.scrollTo({
       top: offsetTop,
       behavior: 'smooth',
@@ -55,7 +67,7 @@ export default function Nav({ faq, feature, handleActive }) {
         )}
 
         <nav className="nav">
-          <ul className="flex ml-4 space-x-4">
+          <ul className="flex ml-8 space-x-4">
             <li className="relative">
               <a href="/list" onClick={() => scrollDownToTop()}> {/* Fix: Use scrollDownToTop function */}
                 Operations
@@ -74,13 +86,13 @@ export default function Nav({ faq, feature, handleActive }) {
 
               {isOpen && (
                 <div className="absolute left-0 flex flex-col items-start w-[300px] bg-red-100 rounded-lg top-7">
-                  <a href="#" className="w-full p-2 break-all hover:bg-slate-400">
+                  <a href="/folder/NDPR" className="w-full p-2 break-all hover:bg-slate-400">
                     NDPR
                   </a>
-                  <a href="#" className="w-full p-2 break-all hover:bg-slate-400">
+                  <a href="/folder/PCIDSS" className="w-full p-2 break-all hover:bg-slate-400">
                     PCIDSS
                   </a>
-                  <a href="#" className="w-full p-2 break-all hover:bg-slate-400">
+                  <a href="/folder/PCIDSS" className="w-full p-2 break-all hover:bg-slate-400">
                     Regulations on a long text
                   </a>
                   {/* Add more menu items as needed */}
@@ -100,7 +112,7 @@ export default function Nav({ faq, feature, handleActive }) {
           <button onClick={handleActive} className="landing-header-button w-[130px]">
             Upload
           </button>
-          <button className="bg-orange-500 text-white w-[130px] ml-2  hover:bg-orange-300 hover:text-white">
+          <button onClick={handleLogout} className="bg-orange-500 text-white w-[130px] ml-2  hover:bg-orange-300 hover:text-white">
             Logout
           </button>
         </div>
