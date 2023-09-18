@@ -5,15 +5,10 @@ import Footer from "../components/footer";
 import axios from 'axios';
 import { useRef } from "react";
 import Modal from "../components/modal";
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-const FileList = ({ setIsOpen }) => {
-  const navigate = useNavigate();
-  //   const [fileList, setFileList] = useState([]);
-//   const [folderList, setFolderList] = useState([]);
-  const [folders, setFolders] = useState(['NDPR', 'PCIDSS', 'ISO-27001', 'Compliance', 'Organogram', 'Documentations', 'ServiceLevelAgreement','TAT', 'documents', 'People/culture','info-security-management']);
-  // const [folders, setFolders] = useState([]);
-
+const Single = ({ setIsOpen }) => {
+  const { folderName } = useParams();
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [files, setFiles] = useState([]);
   
@@ -62,11 +57,7 @@ const FileList = ({ setIsOpen }) => {
   const faq = useRef(null);
   const feature = useRef(null);
   
-  const handleFolderClick = async (folderName) => {
-    console.log('Folder clicked:', folderName);
-    setSelectedFolder(folderName);
-    navigate(`/folder/${folderName}`);
-};
+
 
   const handleDownload = async (filename) => {  //onclick download
     try {
@@ -100,12 +91,34 @@ const FileList = ({ setIsOpen }) => {
     // console.log('Encoded file name:', encodedFileName);
     try {
         await axios.delete(url);
-        handleFolderClick(selectedFolder);
         // For example, you can call the handleFolderClick function to refresh the file list for the selected folder
     } catch (error) {
         console.error('Error deleting file:', error);
     }
 };
+
+useEffect(() => {
+  const fetchFilesForFolder = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/folders/${folderName}/filelist`);
+      setFiles(response.data.files);
+      const filesData = response.data.files;
+      if (!filesData || filesData.length === 0) {
+        console.log('No files in this folder.');
+        // You can display a message or handle this case accordingly
+        // For example, set a state to show a message to the user
+        // setMessage('No files available for this folder.');
+        return;
+      }
+    } catch (error) {
+      console.error('Error fetching files:', error);
+    }
+  };
+
+  if (folderName) {
+    fetchFilesForFolder();
+  }
+}, [folderName]);
 
   return (
     <div className="terms-container">
@@ -116,24 +129,22 @@ const FileList = ({ setIsOpen }) => {
         <Nav faq={faq} feature={feature} handleActive={handleActive} />
         
         <div className="terms-contents" style={{display:"flex", flexDirection: "column", marginBottom:"240px"}}>
-        <h1 class="text-3xl mb-4 text-center">Folder list</h1>
+        <h1 class="text-3xl mb-4 text-center">Folder: {folderName}</h1>
         <section className='mx-auto'>
-        <ul className="flex mb-5 space-x-4">
-          {folders.map((folderName, index) => (
+        <ul>
             <li
-              key={index}
               className="overflow-hidden transition-transform transform border border-none rounded-lg cursor-pointer hover:scale-05"
             >
               <img
                 src={folder}
                 alt="Image1"
                 className="w-full"
-                onClick={() => handleFolderClick(folderName)}
+                // onClick={() => handleFolderClick(folderName)}
               />
               <p>{folderName}</p>
             </li>
-          ))}
-        </ul>
+        </ul> 
+     
         </section>
         <div className="container mx-auto mt-4">
         <div className="my-6 overflow-x-auto bg-white rounded shadow-md">
@@ -153,34 +164,27 @@ const FileList = ({ setIsOpen }) => {
       </tr>
     </thead>
     <tbody className="text-sm font-light text-gray-600">
-    {files?.length > 0 ? (
-    files.map((file, index) => (
-      <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-      <td className="px-2 py-3">
-        <button
-          className="text-red-500 hover:text-red-700"
-          onClick={() => handleDelete(selectedFolder, file.fileName)} 
-        >
-          Delete
-        </button>
-      </td>
-      <td className="px-4 py-3 text-left">{file?.fileName}</td>
-      <td className="px-4 py-3 text-left">{file?.dateCreated}</td>
-      <td className="px-4 py-3 text-left">{file?.documentType}</td>
-      <td className="px-4 py-3 text-left">{file?.documentNumber}</td>
-      <td className="px-4 py-3 text-left">{file?.department}</td>
-      <td className="px-4 py-3 text-left">{file?.division}</td>
-      <td className="px-4 py-3 text-left">{file?.classification}</td>
-      <td className="px-4 py-3 text-left">{file?.documentAuthor}</td>
-      <td className="px-4 py-3 text-left">{file?.status}</td>
-    </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="10">No files available.</td>
-    </tr>
-  )}
-  
+      {files.map((file, index) => (
+        <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+          <td className="px-2 py-3">
+            <button
+              className="text-red-500 hover:text-red-700"
+              onClick={() => handleDelete(selectedFolder, file.fileName)} 
+            >
+              Delete
+            </button>
+          </td>
+          <td className="px-4 py-3 text-left">{file.fileName}</td>
+          <td className="px-4 py-3 text-left">{file.dateCreated}</td>
+          <td className="px-4 py-3 text-left">{file.documentType}</td>
+          <td className="px-4 py-3 text-left">{file.documentNumber}</td>
+          <td className="px-4 py-3 text-left">{file.department}</td>
+          <td className="px-4 py-3 text-left">{file.division}</td>
+          <td className="px-4 py-3 text-left">{file.classification}</td>
+          <td className="px-4 py-3 text-left">{file.documentAuthor}</td>
+          <td className="px-4 py-3 text-left">{file.status}</td>
+        </tr>
+      ))}
     </tbody>
   </table>
 </div>
@@ -226,5 +230,5 @@ const FileList = ({ setIsOpen }) => {
   );
 };
 
-export default FileList;
+export default Single;
 

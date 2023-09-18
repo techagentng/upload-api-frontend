@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "../api/axios"
 import InfoSucess from "../components/infoSucess";
 import InfoDanger from "../components/infoDanger";
 import logo from "../img/Routepay-Logo-1.svg"
 import { useNavigate } from "react-router-dom";
-// import { useAuthContext } from "../Contexts/AuthContext";
+import AuthContext from "../Contexts/AuthContext";
 // import useAuth from "../hooks/useAuth";
 
 export default LoginPage;
+
 const LOGIN_URL = "/auth/login";
 function LoginPage() {
-    // const { authUser, setAuthUser } = useAuthContext();
+  const navigate = useNavigate();
     // const { authUser, setAuthUser } = useAuthContext();
     const [email, setEmail] = React.useState("");
+    const [sucess, setSucess] = useState(false)
     const [password, setPassword] = React.useState("");
     const [alert, setAlert] = useState("")
     // const [isOpen, setIsOpen] = useState("")
@@ -25,7 +27,6 @@ function LoginPage() {
         "email": email,
         "password": password,
       })
-const navigate = useNavigate();
       const handleEmailChange = (e) => {
         const selectedEmail = e.target.value 
         // setSelectedFileName(selectedFileName);
@@ -95,11 +96,14 @@ const navigate = useNavigate();
               },
             });
         
-            console.log("rdata", response.data);
+            console.log("rdata", response.data.data.AccessToken);
+            if(response.data.data.AccessToken) {
+              localStorage.setItem("token", response.data.data.AccessToken);
+            }
             // const { AccessToken, name } = response.data
             // setAuthUser({ AccessToken, name });
             // console.log("authUser", authUser);
-          navigate("/lala")
+          navigate("/")
             
             setTimeout(() => {
               displayMessage("File saved successfully", "success");
