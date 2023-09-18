@@ -114,7 +114,7 @@ export default function Nav({ faq, feature, handleActive }) {
                   culture
                   </a>
                   <a href="/folder/Information security management" className="w-full p-2 break-all hover:bg-slate-400">
-                  Information security management
+                  Information security management.
                   </a>
                   {/* Add more menu items as needed */}
                 </div>
