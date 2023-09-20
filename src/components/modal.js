@@ -186,19 +186,18 @@ const config = {
   
       // Log the contents of the formData object
       console.log("formData entries:");
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}::`, value);
+      if (response.status === 200 || response.status === 201) {
+        // Successful response
+                // displayMessage("File saved successfully", "success");
+        console.log("File saved successfully");
+      } else {
+        // Handle error here
+        console.error('Error response:', response);
       }
-      
-      setTimeout(() => {
-        displayMessage("File saved successfully", "success");
-      }, 500);
+        // displayMessage("File saved successfully", "success");
     } catch (error) {
       console.error('Upload error:', error);
       console.error('Type of error:', typeof(error));
-      setTimeout(() => {
-        displayErrorMessage("Duplicate files are not allowed", "danger");
-      }, 300);
     }
   };
   
@@ -429,8 +428,6 @@ const config = {
                       </div>
                     ))}
                 
-
-          
                 </div>
                 <div>
                   <button

@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import folder from "../img/folder.png"
 import Nav from "../components/nav";
 import Footer from "../components/footer";
-import axios from 'axios';
 import { useRef } from "react";
 import Modal from "../components/modal";
 import { useNavigate } from 'react-router-dom';
+import { FolderContext } from '../Contexts/FileContext';
 
 const FileList = ({ setIsOpen }) => {
+  const { handleFolderClick } = useContext(FolderContext);
   const navigate = useNavigate();
-  //   const [fileList, setFileList] = useState([]);
-//   const [folderList, setFolderList] = useState([]);
-  const [folders, setFolders] = useState(['NDPR', 'PCIDSS', 'ISO-27001', 'Compliance', 'Organogram', 'Documentations', 'ServiceLevelAgreement','TAT', 'documents', 'People/culture','info-security-management']);
-  // const [folders, setFolders] = useState([]);
+  const [folders, setFolders] = useState(['NDPR', 'PCIDSS', 'ISO-27001', 'Compliance', 'Organogram', 'Documentations', 'Service Level Agreement','TAT', 'People/culture','Info-Security-Management']);
 
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [files, setFiles] = useState([]);
@@ -61,12 +59,6 @@ const FileList = ({ setIsOpen }) => {
   
   const faq = useRef(null);
   const feature = useRef(null);
-  
-  const handleFolderClick = async (folderName) => {
-    console.log('Folder clicked:', folderName);
-    setSelectedFolder(folderName);
-    navigate(`/folder/${folderName}`);
-};
 
   const handleDownload = async (filename) => {  //onclick download
     try {
@@ -91,21 +83,29 @@ const FileList = ({ setIsOpen }) => {
     }
   };
   
-  const handleDelete = async (folder, fileName) => {
-    const encodedFileName = encodeURIComponent(fileName);
-    const url = `http://localhost:8080/documents/${folder}/${encodedFileName}`;
+  // const handleDelete = async (folder, fileName) => {
+  //   const encodedFileName = encodeURIComponent(fileName);
+  //   const url = `http://localhost:8080/delete/${folder}/${encodedFileName}`;
   
-    // const encodedFileName = encodeURIComponent(fileName);
-    console.log('Deleting file:', folder, fileName);
-    // console.log('Encoded file name:', encodedFileName);
-    try {
-        await axios.delete(url);
-        handleFolderClick(selectedFolder);
-        // For example, you can call the handleFolderClick function to refresh the file list for the selected folder
-    } catch (error) {
-        console.error('Error deleting file:', error);
-    }
-};
+  //   // Display a confirmation dialog before deletion
+  //   const confirmDelete = window.confirm('Are you sure you want to delete this file?');
+  //   if (!confirmDelete) {
+  //     return; // Cancel deletion if the user clicks Cancel
+  //   }
+  
+  //   try {
+  //     // Send a DELETE request to delete the file
+  //     await axios.delete(url);
+  
+  //     // Update the state to reflect the file deletion
+  //     setFiles(prevFiles => prevFiles.filter(file => file.fileName !== fileName));
+  //   } catch (error) {
+  //     console.error('Error deleting file:', error);
+  //     // Handle error: Display an error message to the user
+  //     // You can set an error state or show a notification to the user
+  //   }
+  // };
+  
 
   return (
     <div className="terms-container">
@@ -116,7 +116,7 @@ const FileList = ({ setIsOpen }) => {
         <Nav faq={faq} feature={feature} handleActive={handleActive} />
         
         <div className="terms-contents" style={{display:"flex", flexDirection: "column", marginBottom:"240px"}}>
-        <h1 class="text-3xl mb-4 text-center">Folder list</h1>
+        <h1 class="text-3xl mb-4 text-center pb-8">Work Central Repository</h1>
         <section className='mx-auto'>
         <ul className="flex mb-5 space-x-4">
           {folders.map((folderName, index) => (
@@ -157,12 +157,12 @@ const FileList = ({ setIsOpen }) => {
     files.map((file, index) => (
       <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
       <td className="px-2 py-3">
-        <button
+        {/* <button
           className="text-red-500 hover:text-red-700"
           onClick={() => handleDelete(selectedFolder, file.fileName)} 
         >
           Delete
-        </button>
+        </button> */}
       </td>
       <td className="px-4 py-3 text-left">{file?.fileName}</td>
       <td className="px-4 py-3 text-left">{file?.dateCreated}</td>

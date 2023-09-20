@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import folder from "../img/folder.png"
 import Nav from "../components/nav";
 import Footer from "../components/footer";
@@ -6,10 +6,11 @@ import axios from 'axios';
 import { useRef } from "react";
 import Modal from "../components/modal";
 import { useParams } from 'react-router-dom';
+import { FolderContext } from '../Contexts/FileContext';
 
 const Single = ({ setIsOpen }) => {
+  const { handleFolderClick } = useContext(FolderContext);
   const { folderName } = useParams();
-  const [selectedFolder, setSelectedFolder] = useState(null);
   const [files, setFiles] = useState([]);
   
   const [isActive, setIsActive] = useState(false);
@@ -82,16 +83,17 @@ const Single = ({ setIsOpen }) => {
     }
   };
   
-  const handleDelete = async (folder, fileName) => {
-    const encodedFileName = encodeURIComponent(fileName);
-    const url = `http://localhost:8080/documents/${folder}/${encodedFileName}`;
+  const handleDelete = async (folderName, filename) => {
+    const fileName = encodeURIComponent(filename);
+    const url = `http://localhost:8080/api/v1/documents/${folderName}/${fileName}`;
   
     // const encodedFileName = encodeURIComponent(fileName);
-    console.log('Deleting file:', folder, fileName);
+    console.log('Deleting file:', folderName, fileName);
     // console.log('Encoded file name:', encodedFileName);
     try {
         await axios.delete(url);
         // For example, you can call the handleFolderClick function to refresh the file list for the selected folder
+        console.log('File deleted successfully:', folderName, fileName);
     } catch (error) {
         console.error('Error deleting file:', error);
     }
@@ -129,7 +131,7 @@ useEffect(() => {
         <Nav faq={faq} feature={feature} handleActive={handleActive} />
         
         <div className="terms-contents" style={{display:"flex", flexDirection: "column", marginBottom:"240px"}}>
-        <h1 class="text-3xl mb-4 text-center">Folder: {folderName}</h1>
+        <h1 class="text-3xl mb-4 text-center">{folderName}</h1>
         <section className='mx-auto'>
         <ul>
             <li
@@ -139,9 +141,9 @@ useEffect(() => {
                 src={folder}
                 alt="Image1"
                 className="w-full"
-                // onClick={() => handleFolderClick(folderName)}
+                onClick={() => handleFolderClick(folderName)}
               />
-              <p>{folderName}</p>
+              
             </li>
         </ul> 
      
@@ -169,7 +171,7 @@ useEffect(() => {
           <td className="px-2 py-3">
             <button
               className="text-red-500 hover:text-red-700"
-              onClick={() => handleDelete(selectedFolder, file.fileName)} 
+              onClick={() => handleDelete(folderName, file.fileName)} 
             >
               Delete
             </button>
@@ -190,39 +192,6 @@ useEffect(() => {
 </div>
 
 </div>
-
-
-{/*         
-{selectedFolder && (
-                <div className="grid gap-4 grid1-cols-">
-                
-            <div className="flex flex-col">
-              
-            {files ? files.map((file, index) => (
-                <div key={index} className="p-4 mb-4 text-left border-gray-300 rounded-lg bordere">
-                    <p className="text-lg font-semibold">File Name: {file.fileName}</p>
-                    <p>Date Created: {file.dateCreated}</p>
-                    <p>Modification Time: {file.modificationTime}</p>
-                    <div className="flex justify-around mt-2">
-                        <button
-                                    onClick={() => handleDownload(file.fileName)} // Assuming you pass the filename to the handler
-                            className="text-white bg-blue-500 rounded-md w-30 w-py-0 w 2 w-1px-4 hover:bg-blue-600"
-                        >
-                            Download
-                        </button>
-                        <button
-                            onClick={() => handleDelete(selectedFolder, file.fileName)} // Assuming you pass the filename to the handler
-                            className="w-20 py-2 text-white bg-red-500 rounded-md px15-4 w- hover:bg-red-600"
-                        >
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            )): <p class="text-zinc-500 text-center">oops! you have not added a file to this folder</p>}
-        </div>
-            </div>
-            
-            )} */}
          </div>
         <Footer faq={faq} feature={feature} />
       </div>
