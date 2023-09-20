@@ -14,3 +14,24 @@
 // };
 
 // export const useFileContext = () => useContext(FileContext);
+import { createContext, useState } from 'react';
+
+const FolderContext = createContext();
+
+const FolderProvider = ({ children }) => {
+  const [selectedFolder, setSelectedFolder] = useState(null);
+
+  const handleFolderClick = (folderName) => {
+    console.log('Folder clicked:', folderName);
+    setSelectedFolder(folderName);
+    // Navigate or do other actions as needed
+  };
+
+  return (
+    <FolderContext.Provider value={{ selectedFolder, handleFolderClick }}>
+      {children}
+    </FolderContext.Provider>
+  );
+};
+
+export { FolderContext, FolderProvider };
