@@ -7,11 +7,16 @@ import { useRef } from "react";
 import Modal from "../components/modal";
 import { useParams } from 'react-router-dom';
 import { FolderContext } from '../Contexts/FileContext';
+import AuthContext from '../Contexts/AuthProvider';
 
 const Single = ({ setIsOpen }) => {
-  const { handleFolderClick } = useContext(FolderContext);
+  const { handleFolderClick, fetchFilesForFolder } = useContext(FolderContext);
+  const { token } = useContext(AuthContext);
   const { folderName } = useParams();
   const [files, setFiles] = useState([]);
+  const [documents, setDocuments] = useState([]);
+  const [AdditionallData, setAdditionalData] = useState([]);
+
   
   const [isActive, setIsActive] = useState(false);
   const [hidden, setHidden] = useState({
@@ -86,14 +91,13 @@ const Single = ({ setIsOpen }) => {
   const handleDelete = async (folderName, filename) => {
     const fileName = encodeURIComponent(filename);
     const url = `http://localhost:8080/api/v1/documents/${folderName}/${fileName}`;
-  
+    
     // const encodedFileName = encodeURIComponent(fileName);
     console.log('Deleting file:', folderName, fileName);
     // console.log('Encoded file name:', encodedFileName);
     try {
         await axios.delete(url);
-        // For example, you can call the handleFolderClick function to refresh the file list for the selected folder
-        console.log('File deleted successfully:', folderName, fileName);
+        setFiles(files.filter((file) => file.fileName !== filename));
     } catch (error) {
         console.error('Error deleting file:', error);
     }
@@ -112,6 +116,9 @@ useEffect(() => {
         // setMessage('No files available for this folder.');
         return;
       }
+      const additionalResponse = await axios.get('http://localhost:8080/api/v1/documents'); 
+      setAdditionalData(additionalResponse.data.data);
+      console.log(additionalResponse.data.data)
     } catch (error) {
       console.error('Error fetching files:', error);
     }
@@ -121,6 +128,7 @@ useEffect(() => {
     fetchFilesForFolder();
   }
 }, [folderName]);
+
 
   return (
     <div className="terms-container">
@@ -166,27 +174,33 @@ useEffect(() => {
       </tr>
     </thead>
     <tbody className="text-sm font-light text-gray-600">
-      {files.map((file, index) => (
-        <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-          <td className="px-2 py-3">
-            <button
-              className="text-red-500 hover:text-red-700"
-              onClick={() => handleDelete(folderName, file.fileName)} 
-            >
-              Delete
-            </button>
-          </td>
-          <td className="px-4 py-3 text-left">{file.fileName}</td>
-          <td className="px-4 py-3 text-left">{file.dateCreated}</td>
-          <td className="px-4 py-3 text-left">{file.documentType}</td>
-          <td className="px-4 py-3 text-left">{file.documentNumber}</td>
-          <td className="px-4 py-3 text-left">{file.department}</td>
-          <td className="px-4 py-3 text-left">{file.division}</td>
-          <td className="px-4 py-3 text-left">{file.classification}</td>
-          <td className="px-4 py-3 text-left">{file.documentAuthor}</td>
-          <td className="px-4 py-3 text-left">{file.status}</td>
-        </tr>
-      ))}
+      {files?.length > 0 ? (
+           files.map((file, index) => (
+            <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+              <td className="px-2 py-3">
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => handleDelete(folderName, file.fileName)} 
+                >
+                  Delete
+                </button>
+              </td>
+              <td className="px-4 py-3 text-left">{file.fileName}</td>
+              <td className="px-4 py-3 text-left">{file.dateCreated}</td>
+              <td className="px-4 py-3 text-left">{file.documentType}</td>
+              <td className="px-4 py-3 text-left">{file.documentNumber}</td>
+              <td className="px-4 py-3 text-left">{file.department}</td>
+              <td className="px-4 py-3 text-left">{file.division}</td>
+              <td className="px-4 py-3 text-left">{file.classification}</td>
+              <td className="px-4 py-3 text-left">{file.documentAuthor}</td>
+              <td className="px-4 py-3 text-left">{file.status}</td>
+            </tr>
+          ))) : (
+            <tr>
+            <td colSpan="10">No files available.</td>
+          </tr>
+          )}
+   
     </tbody>
   </table>
 </div>

@@ -16,13 +16,7 @@ const Modal = ({ setIsOpen }) => {
   //   toast("basic notification")
   // }
   const [selectedFile, setSelectedFile] = useState([])
-  const [selectedFileName, setSelectedFileName] = useState("")
-
-  const [selectedFolder, setSelectedFolder] = useState('uploads'); // Default folder
-  const [documentType, setDocumentType] = useState(''); 
-  const [department, setDepartment] = useState(''); 
-  const [division, setDivision] = useState(''); 
-  const [docClass, setDocClass] = useState(''); 
+  const [selectedFolder, setSelectedFolder] = useState('uploads'); 
 
   const [close, setClose] = useState(false)
   const [folderName, setFolderName] = useState("");
@@ -171,24 +165,25 @@ const Modal = ({ setIsOpen }) => {
     console.log("tyofff", typeof(selectedFile));
     console.log("file-bf-postR", selectedFile);
 
-const accessToken = localStorage.getItem('access_token'); // Retrieve the access token from storage
+const accessToken = localStorage.getItem('token'); 
+console.log('Access Token:', accessToken);
 
 const config = {
   headers: {
     'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer ${accessToken}`, // Set the Authorization header with the access token
+    'Authorization': `Bearer ${accessToken}`, 
   },
 };
+console.log('Authorization Header:', config.headers.Authorization);
+
     try {
       const response = await axios.post('http://localhost:8080/api/v1/upload', data2append, config);
   
       console.log("rdata", response.data);
   
-      // Log the contents of the formData object
-      console.log("formData entries:");
       if (response.status === 200 || response.status === 201) {
         // Successful response
-                // displayMessage("File saved successfully", "success");
+        displayMessage("File saved successfully", "success");
         console.log("File saved successfully");
       } else {
         // Handle error here
@@ -198,6 +193,17 @@ const config = {
     } catch (error) {
       console.error('Upload error:', error);
       console.error('Type of error:', typeof(error));
+      if(!error.response){
+        displayErrorMessage("No server response", "danger");
+      } else if(error.response?.status === 400) {
+        displayErrorMessage("missing user name or password", "danger");
+      } else if(error.response?.status === 401) {
+        displayErrorMessage("Unauthorized", "danger");
+      } else if(error.response?.status === 403) {
+        displayErrorMessage("Unauthorized access", "danger");
+      } else if(error.response?.status === 404) {
+        displayErrorMessage("Not found", "danger");
+      }
     }
   };
   
@@ -366,7 +372,7 @@ const config = {
                       <option value="classC">class C</option>
                       <option value="classD">class D</option>
                     </select>
-                    <p class="mt-1 text-red-600 text-sm">{inputMessage.docClass}</p>
+                    <p class="mt-1 text-red-600 text-sm">{inputMessage.docclass}</p>
                   </div>
                   
                 </div>

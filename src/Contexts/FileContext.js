@@ -1,34 +1,29 @@
-// // FileContext.js
-// import React, { createContext, useContext, useState } from "react";
-
-// const FileContext = createContext();
-
-// export const FileProvider = ({ children }) => {
-//     const [files, setFiles] = useState([]);
-
-//     return (
-//         <FileContext.Provider value={{ files, setFiles }}>
-//             {children}
-//         </FileContext.Provider>
-//     );
-// };
-
-// export const useFileContext = () => useContext(FileContext);
-import { createContext, useState } from 'react';
+// FileContext.js
+import { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
 const FolderContext = createContext();
 
 const FolderProvider = ({ children }) => {
   const [selectedFolder, setSelectedFolder] = useState(null);
+  const [files, setFiles] = useState([]);
+
+//   const fetchFilesForFolder = async (folderName) => {
+//     try {
+//       const response = await axios.get(`http://localhost:8080/api/v1/folders/${folderName}/filelist`);
+//       setFiles(response.data.files);
+//     } catch (error) {
+//       console.error('Error fetching files:', error);
+//     }
+//   };
 
   const handleFolderClick = (folderName) => {
     console.log('Folder clicked:', folderName);
     setSelectedFolder(folderName);
-    // Navigate or do other actions as needed
   };
 
   return (
-    <FolderContext.Provider value={{ selectedFolder, handleFolderClick }}>
+    <FolderContext.Provider value={{ selectedFolder, handleFolderClick, files, }}>
       {children}
     </FolderContext.Provider>
   );

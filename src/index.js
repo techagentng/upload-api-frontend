@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-// import { AuthProvider } from './Contexts/AuthContext';
+import { AuthProvider } from './Contexts/AuthProvider';
  import { FolderProvider } from './Contexts/FileContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <AuthProvider> */}
+    <AuthProvider>
     <FolderProvider>
       <App />
     </FolderProvider>
-    {/* </AuthProvider> */}
+    </AuthProvider>
   </React.StrictMode>
 );
 

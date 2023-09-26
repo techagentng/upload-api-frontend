@@ -1,27 +1,37 @@
 import "../css/nav.css";
 import Logo from "./logo";
 import Ham from "../pages/landing-page/icon/hamburger.png";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {Link, useNavigate} from "react-router-dom"
 import { AiFillCaretDown } from "react-icons/ai";
 import { AiFillCaretUp } from "react-icons/ai";
 import axios from "../api/axios";
-// import {useAuth, useAuthContext} from "../Contexts/AuthContext";
+// import { token } from "../Contexts/AuthProvider";
+import AuthContext from "../Contexts/AuthProvider";
 
 export default function Nav({ faq, feature, handleActive }) {
- const navigate = useNavigate()
-  const handleLogout = async () => {
-    try {
-      // Send a request to the server's logout endpoint
-      const response = await axios.post('/logout'); // Adjust the endpoint URL as needed
-      navigate('/home')
-      // Handle the server response (e.g., clear user session, update UI, etc.)
-      // For simplicity, we'll just log the response
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
+
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate()
+//  console.log(token)
+  // const handleLogout = async () => {
+  //   try {
+  //     // Send a request to the server's logout endpoint
+  //     const response = await axios.post('http://localhost:8080/api/v1/logout'); // Adjust the endpoint URL as needed
+  //     navigate('/login')
+  //     // Handle the server response (e.g., clear user session, update UI, etc.)
+  //     // For simplicity, we'll just log the response
+  //   } catch (error) {
+  //     console.error('Error logging out:', error);
+  //   }
+  // };
+  const logout = () => {
+    // Clear the token in local storage
+    localStorage.removeItem('token');
+    // Trigger a custom event for token update
+    const event = new Event('tokenUpdated');
+    window.dispatchEvent(event);
   };
-  
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollDown = (offsetTop) => {
@@ -84,7 +94,7 @@ export default function Nav({ faq, feature, handleActive }) {
                 )}
               </a>
 
-              {isOpen && (
+              {isOpen && token && (
                 <div className="absolute left-0 flex flex-col items-start w-[300px] bg-red-100 rounded-lg top-7">
                   <a href="/folder/NDPR" className="w-full p-2 break-all hover:bg-slate-400">
                     NDPR
@@ -133,12 +143,19 @@ export default function Nav({ faq, feature, handleActive }) {
         </nav>
 
         <div className="flex">
-          <button onClick={handleActive} className="landing-header-button w-[130px]">
-            Upload
-          </button>
-          <button onClick={handleLogout} className="bg-orange-500 text-white w-[130px] ml-2  hover:bg-orange-300 hover:text-white">
-            Logout
-          </button>
+        
+                <button onClick={handleActive} className="landing-header-button w-[130px]">
+                Upload
+              </button>
+      
+          {token ? (
+        <button onClick={logout} className="bg-orange-500 text-white w-[130px] ml-2  hover:bg-orange-300 hover:text-white">
+          Logout
+        </button>
+      ) : (
+        ''
+      )}
+        
         </div>
       </div>
     </>

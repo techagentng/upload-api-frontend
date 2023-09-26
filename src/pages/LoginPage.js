@@ -4,15 +4,14 @@ import InfoSucess from "../components/infoSucess";
 import InfoDanger from "../components/infoDanger";
 import logo from "../img/Routepay-Logo-1.svg"
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../Contexts/AuthContext";
-// import useAuth from "../hooks/useAuth";
+import AuthContext from "../Contexts/AuthProvider";
 
 export default LoginPage;
 
-const LOGIN_URL = "/auth/login";
+// const LOGIN_URL = "/auth/login";
 function LoginPage() {
   const navigate = useNavigate();
-    // const { authUser, setAuthUser } = useAuthContext();
+    const { setAuthUser, authUser } = useContext(AuthContext);
     const [email, setEmail] = React.useState("");
     const [sucess, setSucess] = useState(false)
     const [password, setPassword] = React.useState("");
@@ -81,7 +80,7 @@ function LoginPage() {
             setTimeout(() => {
               setAlert(false);
               setMessage({ text: "", info: "" });
-            }, 500);
+            }, 10000);
           };
 
           const loginData = {
@@ -99,22 +98,25 @@ function LoginPage() {
             console.log("rdata", response.data.data.AccessToken);
             if(response.data.data.AccessToken) {
               localStorage.setItem("token", response.data.data.AccessToken);
+                  // Trigger a custom event when the token is updated
+                  const event = new Event('tokenUpdated');
+                  window.dispatchEvent(event);
             }
-            // const { AccessToken, name } = response.data
-            // setAuthUser({ AccessToken, name });
-            // console.log("authUser", authUser);
-          navigate("/")
-            
-            setTimeout(() => {
+            const { AccessToken, name } = response.data
+             setAuthUser({ AccessToken, name });
+            console.log("authUser", authUser);
+            navigate("/")
+        
               displayMessage("File saved successfully", "success");
-            }, 500);
+        
             // navigate('/login');
           } catch (error) {
-            console.error('reg error:', error);
-            console.error('Type of error:', typeof(error));
-            setTimeout(() => {
-              displayErrorMessage(error.message, "danger");
-            }, 300);
+            if(!error.response) {
+              displayErrorMessage("No server response", "danger");
+            } else {
+              displayErrorMessage(error.response.data.errors, "danger");
+            }
+            console.error('Error saving the file: ', error.response.data.errors);
           }
       }
       
