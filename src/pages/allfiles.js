@@ -1,21 +1,21 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import folder from "../img/folder.png"
 import Nav from "../components/nav";
 import Footer from "../components/footer";
 import { useRef } from "react";
 import Modal from "../components/modal";
 import { useNavigate } from 'react-router-dom';
-import { FolderContext } from '../Contexts/FileContext';
+// import { FolderContext } from '../Contexts/FileContext';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const FileList = ({ setIsOpen }) => {
-  const { handleFolderClick } = useContext(FolderContext);
-  const navigate = useNavigate();
-  const [folders, setFolders] = useState(['NDPR', 'PCIDSS', 'ISO-27001', 'Compliance', 'Organogram', 'Documentations', 'Service Level Agreement','TAT', 'People/culture','Info-Security-Management']);
-
-  const [selectedFolder, setSelectedFolder] = useState(null);
-  const [files, setFiles] = useState([]);
-  
+  const navigate = useNavigate()
+  // const { handleFolderClick } = useContext(FolderContext);
+  const { folderName } = useParams();
+  const [folders, setFolders] = useState(['NDPR', 'PCIDSS', 'ISO-27001', 'Compliance', 'Organogram', 'Documentations', 'Service Level Agreement','TAT', 'People/culture','Info-Security-Management']);  
   const [isActive, setIsActive] = useState(false);
+  const [files, setFiles] = useState([])
   const [hidden, setHidden] = useState({
     display: "none",
   });
@@ -59,6 +59,12 @@ const FileList = ({ setIsOpen }) => {
   
   const faq = useRef(null);
   const feature = useRef(null);
+  
+  const handleFolderClick = (folderName) => {
+    console.log('Folder clicked:', folderName);
+    setFolders(folderName);
+    navigate(`/folder/${folderName}`);
+};
 
   const handleDownload = async (filename) => {  //onclick download
     try {
@@ -83,30 +89,52 @@ const FileList = ({ setIsOpen }) => {
     }
   };
   
-  // const handleDelete = async (folder, fileName) => {
-  //   const encodedFileName = encodeURIComponent(fileName);
-  //   const url = `http://localhost:8080/delete/${folder}/${encodedFileName}`;
+  const handleDelete = async (folderName, fileName) => {
+    const encodedFileName = encodeURIComponent(fileName);
+    const url = `http://localhost:8080/api/v1/documents/${folderName}/${encodedFileName}`;
   
-  //   // Display a confirmation dialog before deletion
-  //   const confirmDelete = window.confirm('Are you sure you want to delete this file?');
-  //   if (!confirmDelete) {
-  //     return; // Cancel deletion if the user clicks Cancel
-  //   }
+    // Display a confirmation dialog before deletion
+    const confirmDelete = window.confirm('Are you sure you want to delete this file?');
+    if (!confirmDelete) {
+      return; // Cancel deletion if the user clicks Cancel
+    }
   
-  //   try {
-  //     // Send a DELETE request to delete the file
-  //     await axios.delete(url);
+    try {
+      // Send a DELETE request to delete the file
+      await axios.delete(url);
   
-  //     // Update the state to reflect the file deletion
-  //     setFiles(prevFiles => prevFiles.filter(file => file.fileName !== fileName));
-  //   } catch (error) {
-  //     console.error('Error deleting file:', error);
-  //     // Handle error: Display an error message to the user
-  //     // You can set an error state or show a notification to the user
-  //   }
-  // };
+      // Update the state to reflect the file deletion
+      // setFiles(prevFiles => prevFiles.filter(file => file.fileName !== fileName));
+    } catch (error) {
+      console.error('Error deleting file:', error);
+      // Handle error: Display an error message to the user
+      // You can set an error state or show a notification to the user
+    }
+  };
   
-
+  useEffect(() => {
+    const fetchFilesForFolder = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/v1/folders/${folderName}/filelist`);
+        setFiles(response.data.files);
+        const filesData = response.data.files;
+        if (!filesData || filesData.length === 0) {
+          console.log('No files in this folder.');
+          // You can display a message or handle this case accordingly
+          // For example, set a state to show a message to the user
+          // setMessage('No files available for this folder.');
+          return;
+        }
+       
+      } catch (error) {
+        console.error('Error fetching files:', error);
+      }
+    };
+  
+    if (folderName) {
+      fetchFilesForFolder();
+    }
+  }, [folderName]);
   return (
     <div className="terms-container">
       <div style={hidden}>
@@ -157,12 +185,12 @@ const FileList = ({ setIsOpen }) => {
     files.map((file, index) => (
       <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
       <td className="px-2 py-3">
-        {/* <button
+        <button
           className="text-red-500 hover:text-red-700"
-          onClick={() => handleDelete(selectedFolder, file.fileName)} 
+          onClick={() => handleDelete(folderName, file.fileName)} 
         >
           Delete
-        </button> */}
+        </button>
       </td>
       <td className="px-4 py-3 text-left">{file?.fileName}</td>
       <td className="px-4 py-3 text-left">{file?.dateCreated}</td>

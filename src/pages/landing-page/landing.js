@@ -1,5 +1,5 @@
 import "./landing.css";
-import { useRef } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import Feature from "../../components/feature";
 import GetStarted from "../../components/GetStarted";
 import Footer from "../../components/footer";
@@ -9,22 +9,26 @@ import Hero from "../../components/hero";
 import mobileGroup from "../../img/accordion/Image_eexubx.png";
 import playstore from "../../img/accordion/playimg.png";
 import Accord from "./accord/accord";
-
 import circle from "../../img/half-circle.svg";
 import shape2 from "../../img/shape-2.svg";
 import bake1 from "../../img/half-bake.svg";
-
-import { useState } from "react";
 import Modal from "../../components/modal";
 import ModalTailwind from "../../components/tailwindModal";
 import CookiePop from "../../components/cookie-pop";
+import AuthContext from "../../Contexts/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing({faq}) {
+  const { token } = useContext(AuthContext);
   const [isActive, setIsActive] = useState(false);
+  const navigate = useNavigate();
   const [hidden, setHidden] = useState({
     display: "none",
   });
   function handleActive() {
+    if (!token) {
+      navigate("/login");
+    }
     if (!isActive) {
       setIsActive((c) => (c = true));
       setHidden((c) => (c = { display: "block" }));
@@ -35,24 +39,11 @@ export default function Landing({faq}) {
       console.log("here " + isActive);
     }
   }
-
  
-
-  // const scrollToBottom = () => {
-  //   window.scrollTo({
-  //     top: document.documentElement.scrollHeight,
-  //     behavior: "smooth",
-  //   });
-  // };
-
-  // const scrollToTop = () => {
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: "smooth",
-  //   });
-  // };
-
   const feature = useRef(null);
+
+    // This will refresh the page after 1 second
+      // window.location.reload();
 
   return (
     <div className="landing-container">
