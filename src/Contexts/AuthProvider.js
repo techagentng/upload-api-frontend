@@ -1,12 +1,15 @@
 import { useState, createContext, useEffect } from "react";
+// var jwt = require("jsonwebtoken");
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({children}) => {
     const [token, setToken] = useState(localStorage.getItem('token') || null);
-    const [authUser, setAuthUser] = useState({});
-
-    useEffect(() => {
+    const [isAdmin, setIsAdmin] = useState(localStorage.getItem('is_admin'))
+    const [id, setId] = useState(localStorage.getItem('id'))
+console.log("admin",isAdmin)
+console.log("email", id)
+useEffect(() => {
         const handleTokenUpdate = () => {
           // Update the token state when the custom event is triggered
           setToken(localStorage.getItem('token'));
@@ -22,10 +25,10 @@ export const AuthProvider = ({children}) => {
       }, []);
 
     const value = {
-        authUser,
-        setAuthUser,
+        setIsAdmin,
         token,
-        setToken,
+        id,
+        isAdmin,
       };
     return <AuthContext.Provider value={value} >{children}</AuthContext.Provider>;
 }

@@ -153,7 +153,9 @@ export default function Nav({ faq, feature, handleActive }) {
           Logout
         </button>
       ) : (
-        ''
+        <Link to="/login" className="flex items-center justify-center bg-orange-500 text-white text-center w-[130px] ml-2  hover:bg-orange-300 hover:text-white">
+        Login
+      </Link>
       )}
         
         </div>

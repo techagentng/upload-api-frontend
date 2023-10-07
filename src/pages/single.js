@@ -8,12 +8,14 @@ import Modal from "../components/modal";
 import { useParams } from 'react-router-dom';
 import { FolderContext } from '../Contexts/FileContext';
 import AuthContext from '../Contexts/AuthProvider';
+import { MdOutlineDelete } from "react-icons/md";
 
 const Single = ({ setIsOpen }) => {
   const { handleFolderClick, fetchFilesForFolder } = useContext(FolderContext);
-  const { token } = useContext(AuthContext);
+  const { id } = useContext(AuthContext);
+  const {isAdmin} = useContext(AuthContext);
   const { folderName } = useParams();
-  const [files, setFiles] = useState([]);
+  const [localFiles, setLocalFiles] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [AdditionallData, setAdditionalData] = useState([]);
 
@@ -97,18 +99,59 @@ const Single = ({ setIsOpen }) => {
     // console.log('Encoded file name:', encodedFileName);
     try {
         await axios.delete(url);
-        setFiles(files.filter((file) => file.fileName !== filename));
+        setLocalFiles(localFiles.filter((file) => file.fileName !== filename));
     } catch (error) {
         console.error('Error deleting file:', error);
     }
 };
+const generateTableRows = () => {
+  const sortedDocuments = [...documents].sort((a, b) => {
+    return new Date(b.dateCreated) - new Date(a.dateCreated);
+  });
+
+  return (
+    <tbody className="text-sm font-light text-gray-600">
+    {sortedDocuments?.length > 0 ? (
+      sortedDocuments.map((file, index) => (
+        <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+          <td className="px-4 py-2 style={{ width: '25px' }} text-center">
+            {isAdmin && (
+              <button
+                className="text-red-500 hover:text-red-700"
+                onClick={() => isAdmin && handleDelete(folderName, file.id)}
+              >
+                <MdOutlineDelete />
+              </button>
+            )}      
+          </td>
+          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.filename}</td>
+          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.uploader_name}</td>
+          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.document_number}</td>
+          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.department}</td>
+          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.division}</td>
+          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.docclass}</td>
+          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.status}</td>
+          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.dateCreated}</td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td colSpan="10">No files available.</td>
+      </tr>
+    )}
+  </tbody>
+  
+  );
+};
+
 
 useEffect(() => {
   const fetchFilesForFolder = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/api/v1/folders/${folderName}/filelist`);
-      setFiles(response.data.files);
       const filesData = response.data.files;
+      // setFiles(filesData);
+
       if (!filesData || filesData.length === 0) {
         console.log('No files in this folder.');
         // You can display a message or handle this case accordingly
@@ -118,7 +161,8 @@ useEffect(() => {
       }
       const additionalResponse = await axios.get('http://localhost:8080/api/v1/documents'); 
       setAdditionalData(additionalResponse.data.data);
-      console.log(additionalResponse.data.data)
+      setDocuments(additionalResponse.data.data);
+      console.log("docutype", additionalResponse.data.data)
     } catch (error) {
       console.error('Error fetching files:', error);
     }
@@ -129,7 +173,27 @@ useEffect(() => {
   }
 }, [folderName]);
 
+// const canDeleteFile = () => {
+//   // Check if the user is an admin or the owner of the file
+//   return isAdmin || id === files.id;
+// };
+// const generateTableRows = () => {
+//   const rows = [];
+  
+//   Object.values(files).forEach((value, index) => {
+//     rows.push(
+//       <tr key={index}>
+//         <td>{value.id}</td>
+//         <td>{value.created_at}</td>
+//         <td>{value.filename}</td>
+//         <td>{value.folder}</td>
+//         {/* Add more columns as needed */}
+//       </tr>
+//     );
+//   });
 
+//   return rows;
+// };
   return (
     <div className="terms-container">
       <div style={hidden}>
@@ -163,45 +227,15 @@ useEffect(() => {
       <tr className="text-sm leading-normal text-gray-600 uppercase bg-gray-200">
         <th className="px-6 py-3 text-left"></th>
         <th className="px-6 py-3 text-left">File Name</th>
-        <th className="px-6 py-3 text-left">Document Type</th>
-        <th className="px-6 py-3 text-left">Document Number</th>
-        <th className="px-6 py-3 text-left">Department</th>
+        <th className="px-6 py-3 text-left">Author</th>
+        <th className="px-6 py-3 text-left">ID</th>
+        <th className="px-6 py-3 text-left">Dept</th>
         <th className="px-6 py-3 text-left">Division</th>
-        <th className="px-6 py-3 text-left">Classification</th>
-        <th className="px-6 py-3 text-left">Document Author</th>
-        <th className="px-6 py-3 text-left">Date Created</th>
+        <th className="px-6 py-3 text-left">Class</th>
         <th className="px-6 py-3 text-left">Status</th>
       </tr>
     </thead>
-    <tbody className="text-sm font-light text-gray-600">
-      {files?.length > 0 ? (
-           files.map((file, index) => (
-            <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-              <td className="px-2 py-3">
-                <button
-                  className="text-red-500 hover:text-red-700"
-                  onClick={() => handleDelete(folderName, file.fileName)} 
-                >
-                  Delete
-                </button>
-              </td>
-              <td className="px-4 py-3 text-left">{file.fileName}</td>
-              <td className="px-4 py-3 text-left">{file.dateCreated}</td>
-              <td className="px-4 py-3 text-left">{file.documentType}</td>
-              <td className="px-4 py-3 text-left">{file.documentNumber}</td>
-              <td className="px-4 py-3 text-left">{file.department}</td>
-              <td className="px-4 py-3 text-left">{file.division}</td>
-              <td className="px-4 py-3 text-left">{file.classification}</td>
-              <td className="px-4 py-3 text-left">{file.documentAuthor}</td>
-              <td className="px-4 py-3 text-left">{file.status}</td>
-            </tr>
-          ))) : (
-            <tr>
-            <td colSpan="10">No files available.</td>
-          </tr>
-          )}
-   
-    </tbody>
+    {generateTableRows()}
   </table>
 </div>
 

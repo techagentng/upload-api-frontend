@@ -5,6 +5,7 @@ import InfoDanger from "../components/infoDanger";
 import logo from "../img/Routepay-Logo-1.svg"
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../Contexts/AuthProvider";
+import jwt_decode from 'jwt-decode';
 
 export default LoginPage;
 
@@ -98,13 +99,13 @@ function LoginPage() {
             console.log("rdata", response.data.data.AccessToken);
             if(response.data.data.AccessToken) {
               localStorage.setItem("token", response.data.data.AccessToken);
+              const decoded = jwt_decode(response.data.data.AccessToken);
+              localStorage.setItem("is_admin", decoded.is_admin);
+              localStorage.setItem("email", decoded.id);
                   // Trigger a custom event when the token is updated
                   const event = new Event('tokenUpdated');
                   window.dispatchEvent(event);
             }
-            const { AccessToken, name } = response.data
-             setAuthUser({ AccessToken, name });
-            console.log("authUser", authUser);
             navigate("/")
         
               displayMessage("File saved successfully", "success");
