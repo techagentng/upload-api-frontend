@@ -58,10 +58,13 @@
     color: #162082;
     letter-spacing: 0.01em;
     margin-bottom:47px ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .landing-header-button:hover{
     background-color: #fe5d0c;
-    color: #f8fafc;
+    color: #1b354f;
   }
 
   @media screen and (min-width: 800px) {

@@ -4,6 +4,7 @@ import "../css/modal.css";
 import styles from "../css/app.module.css";
 import InfoSucess from "./infoSucess";
 import InfoDanger from "./infoDanger";
+import { Alert } from 'flowbite-react';
 
 import SheetDB from "sheetdb-js";
 // import toast from "react-toastify";
@@ -15,9 +16,9 @@ const Modal = ({ setIsOpen }) => {
   // const notify = ()=> {
   //   toast("basic notification")
   // }
-  const [selectedFile, setSelectedFile] = useState([])
+  const [selectedFile, setSelectedFile] = useState("")
   const [selectedFolder, setSelectedFolder] = useState('uploads'); 
-
+  const [filenames, setFilenames] = useState([]);       
   const [close, setClose] = useState(false)
   const [folderName, setFolderName] = useState("");
   const [alert, setAlert] = useState(false);
@@ -29,7 +30,7 @@ const Modal = ({ setIsOpen }) => {
   const [inputMessage, setInputMessage] = useState({
     filename: "",
     folder: "",
-    documentType:"",
+    documentType: "",
     department:"",
     division:"",
     docclass:"",
@@ -91,15 +92,64 @@ const Modal = ({ setIsOpen }) => {
     }
   }
 
+  if (name === 'folder') {
+    if (value.trim() === '') {
+      setInputMessage({ ...inputMessage, folder: "Folder field is required" });
+    } else {
+      setInputMessage({ ...inputMessage, folder: "" }); // Clear the error message
+    }
+  }
+
+  if (name === 'documentType') {
+    if (value.trim() === '') {
+      setInputMessage({ ...inputMessage, documentType: "document typexxxx field is required" });
+    } else {
+      setInputMessage({ ...inputMessage, documentType: "" }); // Clear the error message
+    }
+  }
+
+  if (name === 'department') {    
+    if (value.trim() === '') {
+      setInputMessage({ ...inputMessage, department: "Department field is required" });
+    } else {
+      setInputMessage({ ...inputMessage, department: "" }); // Clear the error message
+    }
+  }
+
+  if (name === 'division') {    
+    if (value.trim() === '') {
+      setInputMessage({ ...inputMessage,  division: "Division field is required" });
+    } else {
+      setInputMessage({ ...inputMessage, division: "" }); // Clear the error message
+    }
+  }
+
+  if (name === 'docclass') {    
+    if (value.trim() === '') {
+      setInputMessage({ ...inputMessage,  docclass: "Docclass field is required" });
+    } else {
+      setInputMessage({ ...inputMessage, docclass: "" }); // Clear the error message
+    }
+  }
+  
   // Update formData
   setFormData({ ...formData, [name]: value });
   };
   
   const handleFileChange = (e) => {
-    setFormData({
-      ...formData,
-      file: e.target.files[0],
-    });
+    const mifile = e.target.files[0];
+    if(mifile){
+      const newFiles = [...selectedFile, mifile];
+      setFilenames(newFiles);
+      setFormData({
+        ...formData,
+        file: e.target.files[0],
+      });
+      const fileName = mifile.name;
+      setFilenames(fileName);
+    }
+
+    console.log("file", mifile);
   };
   const handleOnSubmit = async (event) => {
     event.preventDefault();
@@ -113,41 +163,6 @@ const Modal = ({ setIsOpen }) => {
       docclass: "",
       file: "",
     });
-  
-    if (!formData.file) {
-      setInputMessage({ ...inputMessage, file: "File field is required" });
-      return;
-    }
-    
-    if (formData.filename.trim().length === 0) {
-      setInputMessage({ ...inputMessage, filename: "File name field is required" });
-      return;
-    }
-  
-    if (formData.folder.trim().length === 0) {
-      setInputMessage({ ...inputMessage, folder: "Folder field is required" });
-      return;
-    }
-
-    if (formData.doctype.trim().length === 0) {
-      setInputMessage({ ...inputMessage, documentType: "Document type field is required" });
-      return;
-    }
-
-    if (formData.department.trim().length === 0) {
-      setInputMessage({ ...inputMessage, department: "Department field is required" });
-      return;
-    }
-    
-    if (formData.division.trim().length === 0) {
-      setInputMessage({ ...inputMessage, division: "Division field is required" });
-      return;
-    }
-    
-    if (formData.docclass.trim().length === 0) {
-      setInputMessage({ ...inputMessage, docClass: "Document class field is required" });
-      return;
-    }
     
     const data2append = new FormData();
     data2append.append('filename', formData.filename);
@@ -206,7 +221,11 @@ console.log('Authorization Header:', config.headers.Authorization);
       }
     }
   };
-  
+  const handleRemoveFileName = (index) => {
+    alert("something")
+    const updatedFileNames = filenames.filter((_, i) => i !== index);
+    setFilenames(updatedFileNames);
+  };
   return (
     <div className="modal-general-container">
       <InfoSucess alert={alert} message={message} />
@@ -246,9 +265,10 @@ console.log('Authorization Header:', config.headers.Authorization);
                     placeholder="Enter a file name"
                     name="filename"
                     onChange={handleInputChange}
-                    value={formData.filename}
+                    value={filenames}
+                    disabled
                   />
-                    <p className="mt-1 text-sm text-red-600">{inputMessage.filename}</p>
+                    {/* <p className="mt-1 text-sm text-red-600">{inputMessage.filename}</p> */}
                   </div>
                 </div>
                 <div>
@@ -300,7 +320,7 @@ console.log('Authorization Header:', config.headers.Authorization);
                       <option value="Internal memo">Internal memo</option>
                       <option value="General documents">General document</option>
                     </select>
-                    <p class="mt-1 text-red-600 text-sm">{inputMessage.document}</p>
+                    <p class="mt-1 text-red-600 text-sm">{inputMessage.documentType}</p>
                   </div>
                 </div>
                 <div>
@@ -382,7 +402,7 @@ console.log('Authorization Header:', config.headers.Authorization);
                   </label>
 
                   <div class="mb-8">
-                    <input type="file" name="file" accept=".jpg,.jpeg,.png,.pdf" id="file" class="sr-only" onChange={handleFileChange} aria-required/>
+                    <input type="file" name="file" accept=".jpg,.jpeg,.png,.pdf" id="file" class="sr-only" onChange={handleFileChange} aria-required multiple/>
                     <label
                       for="file"
                       class="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
@@ -402,7 +422,10 @@ console.log('Authorization Header:', config.headers.Authorization);
                       </div>
                     </label>
                   </div>
-                  {selectedFile.map((file, index) => (
+                  {filenames.length > 0 && (
+                    <DismissableAlert filenames={filenames} setFilenames={setFilenames}/>
+                  )}
+                  {/* {filenames.map((file, index) => (
                       <div key={index} className="rounded-md bg-[#F5F7FB] py-4 px-8 mb-3">
                         <div className="flex items-center justify-between">
                           <span id={`filename-${index}`} className="truncate pr-3 text-base font-medium text-[#07074D]">
@@ -432,7 +455,7 @@ console.log('Authorization Header:', config.headers.Authorization);
                           </button>
                         </div>
                       </div>
-                    ))}
+                    ))} */}
                 
                 </div>
                 <div>
@@ -566,4 +589,20 @@ function Phone() {
       />
     </svg>
   );
+}
+
+export function DismissableAlert({filenames, setFilenames}) {
+  return (
+    
+    <Alert
+      color="success"
+      onDismiss={()=>{setFilenames([])}}
+    >
+      <span>
+        <p>
+          {filenames}
+        </p>
+      </span>
+    </Alert>
+  )
 }
