@@ -8,7 +8,10 @@ import Modal from "../components/modal";
 import { useParams } from 'react-router-dom';
 import { FolderContext } from '../Contexts/FileContext';
 import AuthContext from '../Contexts/AuthProvider';
-import { MdOutlineDelete } from "react-icons/md";
+import Box from '@mui/material/Box';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DownloadIcon from '@mui/icons-material/Download';
+import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid"
 
 const Single = ({ setIsOpen }) => {
   const { handleFolderClick, fetchFilesForFolder } = useContext(FolderContext);
@@ -17,9 +20,7 @@ const Single = ({ setIsOpen }) => {
   const { folderName } = useParams();
   const [localFiles, setLocalFiles] = useState([]);
   const [documents, setDocuments] = useState([]);
-  const [AdditionallData, setAdditionalData] = useState([]);
-
-  
+  const [ dataGrid, setDataGrid ] = useState([]) 
   const [isActive, setIsActive] = useState(false);
   const [hidden, setHidden] = useState({
     display: "none",
@@ -31,6 +32,40 @@ const Single = ({ setIsOpen }) => {
     info: "",
   });
   
+  const columns = [
+    {field: 'id', headerName: 'ID'},
+    {field: 'uploader_name', headerName:'Author'},
+    {field: 'created_at', headerName:'Date'},
+    {field: 'doctype', headerName:'Type'},
+    {field: 'department', headerName: 'Department'},
+    {field: 'document_number', headerName: 'Nos'},
+    {field: 'division', headerName:'Division'},
+    {field: 'docclass', headerName:'Class'},
+    {feild: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ id }) => {
+        return [
+          // <GridActionsCellItem
+          //   icon={<DownloadIcon />}
+          //   label="Edit"
+          //   className="textPrimary"
+          //   // onClick={handleEditClick(id)}
+          //   color="inherit"
+          // />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            // onClick={handleDeleteClick(id)}
+            color="inherit"
+          />,
+        ];
+      },
+    },
+  ]
+   
   function handleActive() {
     if (!isActive) {
       setIsActive((c) => (c = true));
@@ -58,7 +93,7 @@ const Single = ({ setIsOpen }) => {
     setMessage({ text: text, info: info });
     setTimeout(() => {
       setAlert(false);
-      setMessage({ text: "", info: "" });
+      setMessage({ text: "", info: ""});
     }, 1000);
   };
   
@@ -103,97 +138,36 @@ const Single = ({ setIsOpen }) => {
     } catch (error) {
         console.error('Error deleting file:', error);
     }
-};
-const generateTableRows = () => {
-  const sortedDocuments = [...documents].sort((a, b) => {
-    return new Date(b.dateCreated) - new Date(a.dateCreated);
-  });
-
-  return (
-    <tbody className="text-sm font-light text-gray-600">
-    {sortedDocuments?.length > 0 ? (
-      sortedDocuments.map((file, index) => (
-        <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-          <td className="px-4 py-2 style={{ width: '25px' }} text-center">
-            {isAdmin && (
-              <button
-                className="text-red-500 hover:text-red-700"
-                onClick={() => isAdmin && handleDelete(folderName, file.id)}
-              >
-                <MdOutlineDelete />
-              </button>
-            )}      
-          </td>
-          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.filename}</td>
-          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.uploader_name}</td>
-          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.document_number}</td>
-          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.department}</td>
-          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.division}</td>
-          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.docclass}</td>
-          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.status}</td>
-          <td className="px-4 py-3 text-left hover:cursor-pointer">{file.dateCreated}</td>
-        </tr>
-      ))
-    ) : (
-      <tr>
-        <td colSpan="10">No files available.</td>
-      </tr>
-    )}
-  </tbody>
-  
-  );
-};
-
-
-useEffect(() => {
-  const fetchFilesForFolder = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/api/v1/folders/${folderName}/filelist`);
-      const filesData = response.data.files;
-      // setFiles(filesData);
-
-      if (!filesData || filesData.length === 0) {
-        console.log('No files in this folder.');
-        // You can display a message or handle this case accordingly
-        // For example, set a state to show a message to the user
-        // setMessage('No files available for this folder.');
-        return;
-      }
-      const additionalResponse = await axios.get('http://localhost:8080/api/v1/documents'); 
-      setAdditionalData(additionalResponse.data.data);
-      setDocuments(additionalResponse.data.data);
-      console.log("docutype", additionalResponse.data.data)
-    } catch (error) {
-      console.error('Error fetching files:', error);
-    }
+    
   };
-
-  if (folderName) {
-    fetchFilesForFolder();
-  }
-}, [folderName]);
-
-// const canDeleteFile = () => {
-//   // Check if the user is an admin or the owner of the file
-//   return isAdmin || id === files.id;
-// };
-// const generateTableRows = () => {
-//   const rows = [];
+  useEffect(() => {
+    const fetchFilesForFolder = async () => {
+      try {
+        if (!folderName) {
+          console.log('Folder name is not provided.');
+          return;
+        }
   
-//   Object.values(files).forEach((value, index) => {
-//     rows.push(
-//       <tr key={index}>
-//         <td>{value.id}</td>
-//         <td>{value.created_at}</td>
-//         <td>{value.filename}</td>
-//         <td>{value.folder}</td>
-//         {/* Add more columns as needed */}
-//       </tr>
-//     );
-//   });
+        // Fetch files for the specified folder
+        const response = await axios.get(`http://localhost:8080/api/v1/document/${folderName}`);
+        const filesData = response.data.data;
+        console.log('Files data:', filesData);
+        if (!filesData || filesData.length === 0) {
+          console.log('No files in this folder.');
+          return;
+        }
+  
+        setDataGrid(filesData);
+      } catch (error) {
+        console.error('Error fetching files:', error);
+      }
+    };
+  
+    fetchFilesForFolder();  // Call the function directly
+  
+  }, [folderName]);
+  
 
-//   return rows;
-// };
   return (
     <div className="terms-container">
       <div style={hidden}>
@@ -202,7 +176,7 @@ useEffect(() => {
       <div className="terms-nav">
         <Nav faq={faq} feature={feature} handleActive={handleActive} />
         
-        <div className="terms-contents" style={{display:"flex", flexDirection: "column", marginBottom:"240px"}}>
+        <div className="terms-contents" style={{display:"flex", flexDirection: "column", marginBottom:"240px", margin:'auto'}}>
         <h1 class="text-3xl mb-4 text-center">{folderName}</h1>
         <section className='mx-auto'>
         <ul>
@@ -221,25 +195,26 @@ useEffect(() => {
      
         </section>
         <div className="container mx-auto mt-4">
-        <div className="my-6 overflow-x-auto bg-white rounded shadow-md">
-  <table className="w-full table-auto min-w-max">
-    <thead>
-      <tr className="text-sm leading-normal text-gray-600 uppercase bg-gray-200">
-        <th className="px-6 py-3 text-left"></th>
-        <th className="px-6 py-3 text-left">File Name</th>
-        <th className="px-6 py-3 text-left">Author</th>
-        <th className="px-6 py-3 text-left">ID</th>
-        <th className="px-6 py-3 text-left">Dept</th>
-        <th className="px-6 py-3 text-left">Division</th>
-        <th className="px-6 py-3 text-left">Class</th>
-        <th className="px-6 py-3 text-left">Status</th>
-      </tr>
-    </thead>
-    {generateTableRows()}
-  </table>
-</div>
-
-</div>
+        <Box
+          sx={{
+            height: 500,
+            width: '100%',
+            '& .actions': {
+              color: 'text.secondary',
+            },
+            '& .textPrimary': {
+              color: 'text.primary',
+            },
+          }}
+        >
+          <DataGrid
+          rows={dataGrid}
+          columns={columns}
+          pageSizeOptions={10}
+          checkboxSelection
+          />
+      </Box>
+        </div>
          </div>
         <Footer faq={faq} feature={feature} />
       </div>
