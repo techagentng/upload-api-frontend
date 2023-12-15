@@ -192,7 +192,7 @@ const config = {
 console.log('Authorization Header:', config.headers.Authorization);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/upload', data2append, config);
+      const response = await axios.post('https://upload-api-74qq.onrender.com//api/v1/upload', data2append, config);
   
       console.log("rdata", response.data);
   
