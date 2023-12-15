@@ -45,10 +45,16 @@ export default function QuickLinks(props) {
               <div className="terms-content">
                 <h1>Quick links</h1>
                 <div className="cookies w-[400px]">
-                  <p><a href="https://portal.routepay.com/">Production Link -Merchant portal</a></p>
-                  <p><Link to="https://portalqa.routepay.com/">RoutePay Merchant QA Link</Link></p>
-                  <p><Link to="https://billsdev.fastrouteng.com/">fastroute Dev link</Link></p>
-                  <p><Link to="https://dev.azure.com/">Azure cloud</Link></p>  
+                  <p><a href="https://portal.routepay.com/">Merchant portal PRODUCTION</a></p>
+                  <p><Link to="https://portalqa.routepay.com/">Merchant portal QA</Link></p>
+                  <p><Link to="https://portalqa.routepay.com/">Merchant portal DEV</Link></p>
+                  <p><Link to="https://bills.fastrouteng.com/">fastroute PRODUCTION</Link></p>
+                  <p><Link to="https://bills.fastrouteng.com/">fastroute DEV</Link></p>
+                  <p><Link to="https://bills.fastrouteng.com/">fastroute QA</Link></p>
+                  <p><Link to="https://bills.fastrouteng.com/">fastroute DEV</Link></p>
+                  <p><Link to="https://dev.azure.com/">Azure cloud for development</Link></p>  
+                  <p><Link to="https://routepay.atlassian.net/wiki/home">Confluence on Jira</Link></p>
+                  <p><Link to="https://routepay.com">Routepay official website</Link></p>
                   <p><Link to="https://routepay.atlassian.net/wiki/home">Confluence</Link></p>
                 </div>
               </div>

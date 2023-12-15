@@ -91,7 +91,7 @@ const FileList = ({ setIsOpen }) => {
   
   const handleDelete = async (folderName, fileName) => {
     const encodedFileName = encodeURIComponent(fileName);
-    const url = `http://localhost:8080/api/v1/documents/${folderName}/${encodedFileName}`;
+    const url = `https://upload-api-74qq.onrender.com/api/v1/documents/${folderName}/${encodedFileName}`;
   
     // Display a confirmation dialog before deletion
     const confirmDelete = window.confirm('Are you sure you want to delete this file?');
@@ -115,7 +115,7 @@ const FileList = ({ setIsOpen }) => {
   useEffect(() => {
     const fetchFilesForFolder = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/v1/folders/${folderName}/filelist`);
+        const response = await axios.get(`https://upload-api-74qq.onrender.com/api/v1/folders/${folderName}/filelist`);
         setFiles(response.data.files);
         const filesData = response.data.files;
         if (!filesData || filesData.length === 0) {

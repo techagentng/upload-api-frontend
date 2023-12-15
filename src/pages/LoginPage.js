@@ -90,7 +90,7 @@ function LoginPage() {
           };
 
           try {
-            const response = await axios.post('http://localhost:8080/api/v1/auth/login', loginData, {
+            const response = await axios.post('https://upload-api-74qq.onrender.com/api/v1/auth/login', loginData, {
               headers: {
                 'Content-Type': 'application/json',
               },

@@ -160,7 +160,7 @@ function RegisterPage() {
         };
         
         try {
-          const response = await axios.post('http://localhost:8080/api/v1/auth/signup', userData, {
+          const response = await axios.post('https://upload-api-74qq.onrender.com/api/v1/auth/signup', userData, {
             headers: {
               'Content-Type': 'application/json',
             },
