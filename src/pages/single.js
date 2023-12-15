@@ -127,7 +127,7 @@ const Single = ({ setIsOpen }) => {
   
   const handleDelete = async (folderName, filename) => {
     const fileName = encodeURIComponent(filename);
-    const url = `http://localhost:8080/api/v1/documents/${folderName}/${fileName}`;
+    const url = `https://upload-api-74qq.onrender.com/api/v1/documents/${folderName}/${fileName}`;
     
     // const encodedFileName = encodeURIComponent(fileName);
     console.log('Deleting file:', folderName, fileName);
@@ -149,7 +149,7 @@ const Single = ({ setIsOpen }) => {
         }
   
         // Fetch files for the specified folder
-        const response = await axios.get(`http://localhost:8080/api/v1/document/${folderName}`);
+        const response = await axios.get(`https://upload-api-74qq.onrender.com/api/v1/document/${folderName}`);
         const filesData = response.data.data;
         console.log('Files data:', filesData);
         if (!filesData || filesData.length === 0) {
