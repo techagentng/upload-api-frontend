@@ -68,7 +68,7 @@ const FileList = ({ setIsOpen }) => {
 
   const handleDownload = async (filename) => {  //onclick download
     try {
-      const response = await fetch(`http://localhost:8080/download/${filename}`);
+      const response = await fetch(`https://upload-api-74qq.onrender.com/api/v1/download/${filename}`);
       const blob = await response.blob();
 
       // Create a temporary URL to download the file
